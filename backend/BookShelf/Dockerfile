@@ -1,16 +1,30 @@
-# Use an official Python runtime as a parent image
-FROM python:3.8
+# # Use an official Python runtime as the base image
+# FROM python:3.10.10
 
-# Set environment variables
-ENV PYTHONDONTWRITEBYTECODE 1
+# # Set the working directory in the container
+# WORKDIR /app
+
+# # Copy the requirements file and install dependencies
+# COPY requirements.txt ./
+# RUN pip install --no-cache-dir -r requirements.txt
+
+# # Copy the rest of the project
+# COPY . .
+
+# # Set any necessary environment variables
+
+# # Expose the port that Django runs on
+# EXPOSE 8000
+
+# # Start the Django development server
+# CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+
+FROM python:3.10.10
+
 ENV PYTHONUNBUFFERED 1
 
-# Set work directory
-WORKDIR /app
-
-# Install dependencies
-COPY requirements.txt /app/
-RUN pip install --no-cache-dir -r requirements.txt
-
-# Copy project
-COPY . /app/
+RUN mkdir /backend
+WORKDIR /backend
+COPY . /backend
+ADD requirements.txt /backend
+RUN pip install -r requirements.txt
