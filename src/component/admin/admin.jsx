@@ -6,19 +6,31 @@ const Admin = () => {
   return (
     <React.Fragment>
       <div className="titleabout fw-bold text-center">
-        <h2 className="text-black">Admin Page</h2>
+        <h2 className="text-black">صفحه ادمین</h2>
       </div>
       <div className="editTable">
         <div className="box">
-            <h4>Add new book</h4>
+            <h4>افزودن کتاب جدید</h4>
           <Link className="btn btn-danger rounded-pill mt-5 mr-5" to={"./addnewitem"}>
-            Add Item <i className="fas fa-plus"></i>
+            اضافه   <i className="fas fa-plus"></i>
           </Link>
         </div>
         <div className="box">
-        <h4>Edit Books</h4>
+        <h4>تغییر کتاب ها</h4>
           <Link className="btn btn-danger rounded-pill mt-5 mr-5" to={"./edit"}>
-            Edit item 
+            تغییر 
+          </Link>
+        </div>
+        <div className="box">
+        <h4>افزودن کتگوری جدی </h4>
+          <Link className="btn btn-danger rounded-pill mt-5 mr-5" to={"./addnewcategory"}>
+          اضافه   <i className="fas fa-plus"></i> 
+          </Link>
+        </div>
+        <div className="box">
+        <h4>افزودن نویسنده جدید </h4>
+          <Link className="btn btn-danger rounded-pill mt-5 mr-5" to={"./addnewwriter"}>
+          اضافه   <i className="fas fa-plus"></i> 
           </Link>
         </div>
       

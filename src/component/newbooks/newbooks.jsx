@@ -40,7 +40,7 @@ return (
         <div className="row">
           <div className="col-md-12 mx-auto">
             <h2>
-              NEW  <b>Books</b>
+              جدید ترین  <b>کتاب ها</b>
             </h2>
             <motion.div ref={carouselRef} whileTap={{ cursor: "grabbing" }} className="carousel">
               <motion.div drag="x" dragConstraints={{ right: 0, left: -width }} className="inner-carousel">
@@ -54,8 +54,8 @@ return (
                             <h4>{book.name}</h4>
                           </Link>
                           <p className="item-price">
-                            <strike>{book.price}$</strike>
-                            <span>{book.price - (2)}$</span>
+                            <strike>{book.price}هزارتومان</strike>
+                            <span>{book.price - (2)}هزارتومان</span>
                           </p>
                         </div>
                         <div className="star-rating">

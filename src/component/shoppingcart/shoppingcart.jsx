@@ -29,26 +29,26 @@ const ShoppingCart = ({ onIncrement, onDecrement, onDelete }) => {
         <div className="row no-gutters">
           <div className="col-md-8">
             <div className="product-details mb-3">
-              <h2>Shopping<b>Cart</b></h2>
-              <h2>{`Cart(${cartBook.length})`}</h2>
+              <h2>سبد<b>خرید</b></h2>
+              {/* <h2>{`Cart(${cartBook.length})`}</h2> */}
               <div className="container">
                 <div className="row">
                   <div className="col-md-12 col-sm-4">
                     <table className="table text-center tablecart">
                       <thead className="text-dark">
                         <tr>
-                          <th>Products</th>
-                          <th>Price</th>
-                          <th>Quantity</th>
-                          <th>Total</th>
-                          <th>Remove</th>
+                          <th>کتاب ها </th>
+                          <th>قیمت</th>
+                          <th>تعداد</th>
+                          <th>قیمت کل</th>
+                          <th>حذف</th>
                         </tr>
                       </thead>
                       <tbody>
                         {cartBook.map((book) => (
                           <tr>
                             <td class="align-middle d-flex bookImage">
-                              <img className="rounded" src={images[book.id]} width={40} alt="" />
+                              <img className="rounded" src={images[book.id-1]} width={40} alt="" />
                               <div className="p-2">
                                 <span className="d-block bookname">
                                   {book.name}
@@ -97,24 +97,24 @@ const ShoppingCart = ({ onIncrement, onDecrement, onDelete }) => {
           </div>
           <div className="card  col-md-3  mx-auto">
             <div className="card-header">
-              <h6 className="card-text">Cart Summary</h6>
+              <h6 className="card-text">پیش فاکتور</h6>
             </div>
             <div className="card-body">
               <div className="d-flex justify-content-between pt-1">
-                <h6>Subtotal</h6>
-                <h6>{total}$</h6>
+                <h6>قیمت محصولات</h6>
+                <h6>{total}</h6>
               </div>
               <div className="d-flex justify-content-between">
-                <h6>Shipping</h6>
-                <h6>10$</h6>
+                <h6>هزینه پست</h6>
+                <h6>20000</h6>
               </div>
             </div>
             <div className="card-footer border-secondary bg-transparent">
               <div className="d-flex justify-content-between">
-                <h6>Total</h6>
-                <h6>{total + 10}$</h6>
+                <h6>قیمت کل</h6>
+                <h6>{total + 20000}</h6>
               </div>
-              <button className="btn btn-block btn-warning">Proceed To Checkout</button>
+              <button className="btn btn-block btn-warning">پرداخت</button>
             </div>
           </div>
         </div>

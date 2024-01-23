@@ -15,10 +15,12 @@
   font-weight: 300;
   text-align: left;
   text-transform: uppercase;
+ 
 }
 
 .title h2 b {
   color: #08023d;
+   
 }
 
 .editbooks {
@@ -35,4 +37,6 @@
   width: 75%;
   margin: 0 auto;
 }
+
+ 
 

@@ -2,8 +2,8 @@
     "users":
            [
             {
-                "username":"admin",
-                "password" : "admin",
+                "username":"kimia",
+                "password" : "1234",
                  "role" : "1"
             },
             {
@@ -11,5 +11,6 @@
                 "password" : "client",
                  "role" : "2"
             }
+            
            ]
 }

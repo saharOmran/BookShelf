@@ -28,8 +28,9 @@ const Navbar = ({ user, setUser }) => {
     <NavTop  ref={stickyRef} sticky={sticky}/>
     <nav ref={stickyRef} className={sticky ? "sticky navbar navbar-expand-lg  navbar-light shadow" :  "navbar navbar-expand-lg  navbar-light shadow"}>
       <div className="container d-flex justify-content-between align-items-center">
-        <Link className="navbar-brand text-danger logo h1 align-self-center" to={"/"}>
-          ALEX<span className="text-black">BookShop</span>
+        <Link className="navbar-brand text-danger logo h1 align-self-center" to={"/"}> 
+          BOOK<span className="text-black">SHELF</span>
+          
         </Link>
 
         <div className="navbar-toggler custom-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -46,23 +47,26 @@ const Navbar = ({ user, setUser }) => {
             <ul className="nav navbar-nav d-lg-inline-flex  mx-lg-5">
               {user === "admin" ?
                 <li className="nav-item mx-lg-4">
-                  <Link className="nav-link" to={"/admin"}>Admin page</Link>
+                  <Link className="nav-link" to={"/admin"}>صفحه ادمین</Link>
                 </li>
                 :
                 <>
                   <li className="nav-item mx-lg-4">
-                    <Link className="nav-link" aria-current="page" to={"/"}>Home</Link>
+                    <Link className="nav-link" aria-current="page" to={"/"}>خانه</Link>
                   </li>
 
                   <li className="nav-item mx-lg-4">
-                    <Link className="nav-link" to={"/allbooks"}>All Books</Link>
+                    <Link className="nav-link" to={"/allbooks"}>کتاب ها</Link>
+                  </li>
+                  <li className="nav-item mx-lg-4">
+                    <Link className="nav-link" to={"/login"}>ثبت نام</Link>
                   </li>
 
                   <li className="nav-item mx-lg-4">
-                    <Link className={wishcount > 0 ? "nav-link" : "nav-link"} to={"/wishlist"}>Wishlist <i className={wishcount > 0 ? "fas fa-heart text-danger" : "far fa-heart"}   ></i></Link>
+                    <Link className={wishcount > 0 ? "nav-link" : "nav-link"} to={"/wishlist"}>علاقه مندی ها <i className={wishcount > 0 ? "fas fa-heart text-danger" : "far fa-heart"}   ></i></Link>
                   </li>
                   <li className="nav-item mx-lg-4">
-                    <Link className="nav-link" to={"/aboutus"}>About us</Link>
+                    <Link className="nav-link" to={"/aboutus"}>درباره ما</Link>
                   </li>
                 </>
               }

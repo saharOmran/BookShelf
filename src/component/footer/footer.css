@@ -4,6 +4,7 @@
   font-size: 18px;
   font-weight: 600;
   position: relative;
+  
 }
 .footer-area h6::after{
     content: "";
@@ -21,7 +22,7 @@
 .footer-area p{
     width: 60%;
     color: gainsboro;
-    margin: 20px auto;
+    margin: 20px auto ;
 }
 .footer-area input{
     z-index: 5;
@@ -30,6 +31,12 @@
 .footer-area Button{
     font-size: 12.5px;
     margin-left: -5px;
+}
+
+.footer-area img{
+    width:130px;
+    height: 130px;
+    margin: 20px auto ;
 }
 
 

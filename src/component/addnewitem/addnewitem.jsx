@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import "./addnewitem.css";
 import Books from '../db';
 import Alert from '../alert/alert';
+import axios from 'axios';
 
 const AddNewItem = () => {
 
@@ -9,22 +10,28 @@ const AddNewItem = () => {
 
     const [newbook, setNewBook] = useState({
         name: "",
+        category:"",
+        writer:"",
+        publisher:"",
         price: "",
+        year:"",
+        Description:"",
+        image:"",
         id: ""
     });
-
+    const [selectedImage, setSelectedImage] = useState(null);
     const [alert, setAlert] = useState(false);
-    // async componentDidMount() {
-    //     let { data } = await axios.get("http://localhost:3004/Books/");
-    //     //Clone
-    //     const state = { ...this.state };
-    //     //Edit
-    //     state.productName = data.name;
-    //     state.productPrice = data.price;
-    //     state.id = data.id;
-    //     //Set state
-    //     this.setState(state);
-    // }
+     const x = async (componentDidMount)=>{
+         let { data } = await axios.get("http://localhost:3004/Books/");
+         //Clone
+         const state = { ...this.state };
+         //Edit
+         state.productName = data.name;
+         state.productPrice = data.price;
+         state.id = data.id;
+         //Set state
+         this.setState(state);
+     }
 
     const handleChange = (e) => {
         //Edit
@@ -36,7 +43,13 @@ const AddNewItem = () => {
     const resetInputField = () => {
         setNewBook({
             name: "",
+            category:"",
+            writer:"",
+            publisher:"",
             price: "",
+            year:"",
+            Description:"",
+            image:"",
             id: ""
         });
     };
@@ -59,20 +72,28 @@ const AddNewItem = () => {
         console.log(e.target.value);
     }
 
+    
+    const handleImageChange = (e) => {
+      if (e.target.files && e.target.files[0]) {
+        const file = e.target.files[0];
+        setSelectedImage(URL.createObjectURL(file));
+      }
+    };
+
 
     
     return (
         <React.Fragment>
             {alert ?
-                <Alert message={"Book added successfully!"} />
+                <Alert message={"کتاب با موفقیت اضافه شد!"} />
                 : null}
             <div className="title my-3 text-center">
-                <h2>Add New<b>Book</b></h2>
+                 
             </div>
             <form className="editbooks" onSubmit={handleSubmit}>
                 <div className="mb-3 itemdata">
                     <label htmlFor="productName" className="form-label">
-                        Book name
+                        اسم کتاب
                     </label>
                     <input
                         name="name"
@@ -85,8 +106,50 @@ const AddNewItem = () => {
                     />
                 </div>
                 <div className="mb-3 itemdata">
+                    <label htmlFor="productCategory" className="form-label">
+                        اسم کتگوری
+                    </label>
+                    <input
+                        name="category"
+                        type="text"
+                        className="form-control"
+                        value={newbook.category}
+                        onChange={handleChange}
+
+                        aria-describedby="emailHelp"
+                    />
+                </div>
+                <div className="mb-3 itemdata">
+                    <label htmlFor="productWriter" className="form-label">
+                        اسم نویسنده
+                    </label>
+                    <input
+                        name="writer"
+                        type="text"
+                        className="form-control"
+                        value={newbook.writer}
+                        onChange={handleChange}
+
+                        aria-describedby="emailHelp"
+                    />
+                </div>
+                <div className="mb-3 itemdata">
+                    <label htmlFor="productPublisher" className="form-label">
+                        اسم ناشر
+                    </label>
+                    <input
+                        name="publisher"
+                        type="text"
+                        className="form-control"
+                        value={newbook.publisher}
+                        onChange={handleChange}
+
+                        aria-describedby="emailHelp"
+                    />
+                </div>
+                <div className="mb-3 itemdata">
                     <label htmlFor="productPrice" className="form-label">
-                        Product price
+                        قیمت محصول
                     </label>
                     <input
                         name="price"
@@ -97,8 +160,46 @@ const AddNewItem = () => {
                     />
                 </div>
                 <div className="mb-3 itemdata">
+                    <label htmlFor="productYear" className="form-label">
+                          سال انتشار
+                    </label>
+                    <input
+                        name="year"
+                        value={newbook.year}
+                        onChange={handleChange}
+                        type="number"
+                        className="form-control"
+                    />
+                </div>
+                <div className="mb-3 itemdata">
+                    <label htmlFor="productDescription" className="form-label">
+                          توضیحات  
+                    </label>
+                    <input
+                        name="description"
+                        type="text"
+                        className="form-control"
+                        value={newbook.Description}
+                        onChange={handleChange}
+
+                        aria-describedby="emailHelp"
+                    />
+                </div>
+                <div className="mb-3 itemdata">
+                    <label htmlFor="productImage" className="form-label">
+                           تصویر کتاب
+                    </label>
+                    <input
+                        name="image"
+                        type="file"
+                        onChange={handleImageChange}
+                        className="form-control"
+                    />
+                    {selectedImage && <img src={selectedImage} alt="Book" />}
+                </div>
+                <div className="mb-3 itemdata">
                     <label htmlFor="productPrice" className="form-label">
-                        Book Id
+                        شماره کتاب
                     </label>
                     <input
                         name="id"
@@ -107,14 +208,15 @@ const AddNewItem = () => {
                         type="number"
                         className="form-control"
                     />
+    
                 </div>
                 <div className="itemdata d-inline-flex">
-                    <button type="submit" className="btn btn-danger px-5 mx-2 rounded-pill ">
-                        Add
+                    <button type="submit" className="btn btn-danger px-5 mx-2 rounded-pill " >
+                        افزودن
                     </button>
-                    <button onClick={resetInputField} className="btn btn-danger px-5 rounded-pill" onSubmit={handleReset}>
+                    {/* <button onClick={resetInputField} className="btn btn-danger px-5 rounded-pill" onSubmit={handleReset}>
                         Reset
-                    </button>
+                    </button> */}
                 </div>
             </form>
         </React.Fragment>);

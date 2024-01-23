@@ -11,11 +11,13 @@ const Header = () => {
                     <img id={`img${i}`} alt="" />
                     <div className="img-text">
                         <h2>
-                            Alex <b> Book Store</b>
+                            BOOK <b> SHELF Store</b>
                         </h2>
-                        <p>
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima maxime omnis sed nostrum, porro harum d.
-                        </p>
+                        {/* <p>
+                            کتابهایی محبوب
+                              
+                            <b><p>برای کتابخانه تان</p></b>
+                        </p> */}
                     </div>
                 </div>
             )

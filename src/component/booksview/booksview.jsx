@@ -10,7 +10,7 @@ const BooksView = ({ books }) => {
             <div className="container" id="Scicence">
                 <div className="row">
                     <div className="col-md-12">
-                        <h2>Most<b> Bought Books</b></h2>
+                        <h2>پرفروش ترین های<b> این ماه</b></h2>
                     </div>
                     <div className="books">
                         {(books.slice(0,10)).map((books) => (
@@ -19,7 +19,7 @@ const BooksView = ({ books }) => {
                                 <div className="thumb-content">
                                     <h5>{books.name}</h5>
                                     <p className="item-price">
-                                        <strike>{books.price}</strike> <span>25%</span>
+                                        <strike>{books.price}</strike> <span>15%</span>
                                     </p>
                                 </div>
                             </div>

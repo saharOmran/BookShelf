@@ -8,15 +8,15 @@ const Footer = () => {
         <div className="container-fluid pt-2" >
           <div className="row footer-area">
             <div className="col-lg-4 col-md-6 col-sm-6 mb-5">
-              <h6>About Us</h6>
-              <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>
+              <h6>ارتباط باما</h6>
+              <p>saharomraan@gmail.com  kimiakhani1382@gmail.com</p>
             </div>
 
             <div className="col-lg-4 col-md-6 col-sm-6 mb-5">
-              <h6>Newsletter</h6>
-              <p>Stay update with our latest</p>
+              <h6>به روز رسانی</h6>
+              <p>برای اگاهی از اخرین<br></br>به روزرسانی ها</p>
               <div className="d-inline-flex align-items-center">
-                <input className="form-control" name="EMAIL" placeholder="Enter Email "   required="" type="email">
+                <input className="form-control" name="EMAIL" placeholder="ایمیل خود را وارد کنید.."   required="" type="email">
                 </input>
                 <button className="click-btn btn btn-default bg-warning">
                   <i className="fa fa-long-arrow-right" aria-hidden="true"></i>
@@ -25,16 +25,12 @@ const Footer = () => {
               </div>
             </div>
             <div className="col-lg-4 col-md-6 col-sm-6 mb-5">
-              <h6>Follow Me on</h6>
-              <a className="btn btn-link btn-floating btn-lg text-white" href="https://www.linkedin.com/in/peter-rezik-a84408123/" role="button" data-mdb-ripple-color="dark"><i className="fab fa-linkedin" /></a>
-              <a className="btn btn-link btn-floating btn-lg text-white " href="https://github.com/PeterRizek009" role="button" data-mdb-ripple-color="dark"><i className="fab fa-github" /></a>
+               <img src="../iconbook.jpg"></img>
+              
             </div>
           </div>
         </div>
-        <div className="text-center text-white bg-dark p-4">
-          © 2022 Copyright:
-          <a className="text-white" href="https://github.com/PeterRizek009">Peter Rezik</a>
-        </div>
+        
       </footer>
     </div>
   );

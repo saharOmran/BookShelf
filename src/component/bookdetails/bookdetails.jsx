@@ -11,9 +11,9 @@ const BookDetails = ({ onSave , books , onWishlist}) => {
     const book = books.filter(element => (element.id === id))[0];
 
     const imageStyle = {
-        width: "250px",
-        height: "400px",
-        padding: "2px",
+        width: "230px",
+        height: "380px",
+        padding: "4px",
     }
     return (
         
@@ -21,24 +21,23 @@ const BookDetails = ({ onSave , books , onWishlist}) => {
                 <div className="container">
                     <div className="bookdetails">
                         <div className="col-md-4">
-                            <img className="card-img-top mb-5 mb-md-0" style={imageStyle} src={images[id]} alt="img" />
+                            <img className="card-img-top mb-5 mb-md-0" style={imageStyle} src={images[id-1]} alt="img" />
                         </div>
                         <div className="col-md-8 p-2">
                             <h1 className="display-5 fw-bolder">{book.name}</h1>
                             <div className="fs-5 mb-5">
-                                <span className="text">{`Price : ${book.price}$`}</span>
-                                <span className='m-5' style={{ color: "green" }}>Sale : 25%</span>
+                                <span className="text">{`قیمت : ${book.price}`}</span>
+                                <span className='m-5' style={{ color: "green" }}> 15%</span>
                             </div>
-                            <p className="lead mb-5 w-50" style={{ color: "black" }}>Lorem ipsum dolor sit amet
-                                consectetur adipisicing elit. Praesentium at dolorem quidem </p>
+                            <p className="lead mb-5 w-50" style={{ color: "black" }}> {`${book.about}`} </p>
                             <div className="d-flex ">
 
                                 <button className="btn btn-danger flex-shrink-1" onClick={() => onSave(book)} type="button">
-                                    Add to cart
+                                   افزودن به سبد خرید
                                 </button>
 
                                 <button className="btn btn-outline-dark flex-shrink-1 mx-2" onClick={() => onWishlist(book)} type="button">
-                                  WishList <i className="far fa-heart"></i>
+                                  افزودن به علاقه مندی ها <i className="far fa-heart"></i>
                                 </button>
 
                             </div>
