@@ -1,0 +1,31 @@
+{
+  "files": {
+    "main.css": "/static/css/main.5be5efdb.css",
+    "main.js": "/static/js/main.3e13839b.js",
+    "static/js/787.e5d2561f.chunk.js": "/static/js/787.e5d2561f.chunk.js",
+    "static/media/zanan.jpg": "/static/media/zanan.c2a4ec8119e87b7309ff.jpg",
+    "static/media/img3.jpg": "/static/media/img3.d8c36dfdaac00a69ef96.jpg",
+    "static/media/img4.jpg": "/static/media/img4.94d0eb8e7a27abea884f.jpg",
+    "static/media/Novel.jpg": "/static/media/Novel.e115cd863b5a6b1ca905.jpg",
+    "static/media/History.jpg": "/static/media/History.5211017578120553a70d.jpg",
+    "static/media/bahar.jpg": "/static/media/bahar.3c9c1bd87a9ca3c355a1.jpg",
+    "static/media/etemad.jpg": "/static/media/etemad.1fb6618121f429b0032d.jpg",
+    "static/media/firoz.jpg": "/static/media/firoz.33adf6c6f40085a3975f.jpg",
+    "static/media/science.jpg": "/static/media/science.e0ab827427c4e6d34584.jpg",
+    "static/media/safar.jpg": "/static/media/safar.597fd93bc0994e4388f5.jpg",
+    "static/media/tohamani.jpg": "/static/media/tohamani.155224707b15af0f160e.jpg",
+    "static/media/img1.jpg": "/static/media/img1.eb623eb5a5bde16296c4.jpg",
+    "static/media/picol.jpg": "/static/media/picol.97df0cc023ead4c52b8d.jpg",
+    "static/media/khorasan.jpg": "/static/media/khorasan.ae6a203613480da395ce.jpg",
+    "static/media/rah.jpg": "/static/media/rah.6ad74e17bf5c98d2b197.jpg",
+    "static/media/jasos.jpg": "/static/media/jasos.817108b8cba8254ba902.jpg",
+    "index.html": "/index.html",
+    "main.5be5efdb.css.map": "/static/css/main.5be5efdb.css.map",
+    "main.3e13839b.js.map": "/static/js/main.3e13839b.js.map",
+    "787.e5d2561f.chunk.js.map": "/static/js/787.e5d2561f.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.5be5efdb.css",
+    "static/js/main.3e13839b.js"
+  ]
+}

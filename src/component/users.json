@@ -1,0 +1,16 @@
+{
+    "users":
+           [
+            {
+                "username":"kimia",
+                "password" : "1234",
+                 "role" : "1"
+            },
+            {
+                "username":"client",
+                "password" : "client",
+                 "role" : "2"
+            }
+            
+           ]
+}
