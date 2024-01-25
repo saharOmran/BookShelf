@@ -72,27 +72,31 @@ const AllBooks = ({ books }) => {
 const handleSelectCategory = (e) => {
     if (e.target.value === "کتاب ها") {
         axios.get(`http://127.0.0.1:5000/book/get_all_books/`)
-            .then(response => setSelectedBooks(response.data))
-            .catch(error => console.log(error));
+        setSelectedBooks(books)
     } else {
         axios.get(`http://127.0.0.2:8000/book/get_books_by_category/${e.target.value}`)
-            .then(response => setSelectedBooks(response.data))
-            .catch(error => console.log(error));
+            selected = books.filter((book) => book.category === e.target.value)
+            setSelectedBooks(selected)
+              
     }
 }
 
 const handleSelectBook = (e) => {
     const bookName = e.target.value;
     axios.get(`http://127.0.0.1:8000/book/get_books_by_title/${bookName}`)
-        .then(response => setSelectedBooks(response.data))
-        .catch(error => console.log(error));
+    const selectedwithname = selectedBooks.length > 0 ?
+    selectedBooks.filter((book) => book.name === e.target.value)
+        : books.filter((book) => book.name === e.target.value)
+        setSelectedBooks(selectedwithname)
 }
 
 const handleSelectWriter = (e) => {
     const writerName = e.target.value;
     axios.get(`http://127.0.0.1:8000/book/get_book_by_author/${writerName}`)
-        .then(response => setSelectedBooks(response.data))
-        .catch(error => console.log(error));
+    const selectedwithwriter = selectedBooks.length > 0 ?
+    selectedBooks.filter((book) => book.writer === e.target.value)
+        : books.filter((book) => book.writer === e.target.value)
+        setSelectedBooks(selectedwithwriter)
 }
  
 

@@ -17,6 +17,11 @@
   
 }
 
+.img-item {
+  width: 80px;
+  height: 80px;
+}
+
 .most-books .book img {
   border: 2px solid #d9d9d9;
   border: 0.5px solid #d2d2d2;
