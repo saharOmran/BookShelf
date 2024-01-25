@@ -2,14 +2,13 @@ import React, { useState } from "react";
 import "./signin.css"
 import users from "../users.json"
 import { useNavigate } from "react-router"
-import axios from "axios"
-
+import { ToastContainer, toast } from "react-toastify";
+ 
 
 
 const SignIn = ({ setUser }) => {
 
   const [closed, setClosed] = useState(false);
-
   const [data, setData] = useState({
     username: "",
     password: "",
@@ -18,64 +17,22 @@ const SignIn = ({ setUser }) => {
 
   let navigate = useNavigate();
 
-  function JSON_to_URLEncoded(element, key, list) {
-    var list = list || [];
-    if (typeof element == "object") {
-      for (var idx in element)
-        JSON_to_URLEncoded(element[idx], key ? key + "[" + idx + "]" : idx, list);
-    } else {
-      list.push(key + "=" + encodeURIComponent(element));
-    }
-    return list.join("&");
-  }
-
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    //  users.users.forEach((user) => {
-    //   if (user.username === data.username && user.password === data.password) {
-    //   setUser(data.username);
-    //   if (user.role === "1") {
-    //     navigate("/admin", { replace: true });
-    //   } else {
-    //     navigate("/", { replace: true });
-    //   }
-    // }
-    //   }
-    //   )
-    const encoded = JSON_to_URLEncoded({
-      "username": data.username,
-      "password" : data.password
-    });
-
-    let userInfo;
-
-    // const res = await axios.get(api-url, {
-    //   headers: {
-    //     Authorization: Bearer ${token},
-    //   },
-    // });
-
-    const response = await axios.post("http://127.0.0.1:8000/token", encoded);
-     console.log("response", response.status)
-
-  //   axios({
-  //     method: "post",
-  //     url: "http://127.0.0.1/category/add_category",
-  //     data: JSON.stringify({name: "action"}),
-  //     auth: response.data.access_token,
-  //     headers:{'Content-Type':'application/json'}
-  // }).then(res => )
-    
-
-    if (response.status == 200) {
-       userInfo = await axios.get(`http://127.0.0.1:8000/user/get_user/${data.username}`);
-
+     users.users.forEach((user) => {
+      if (user.username === data.username && user.password === data.password) {
+      setUser(data.username);
+      if (user.role === "1") {
+        navigate("/admin", { replace: true });
+      } 
     }
-
-    if (userInfo.data.is_admin == true) {
-      navigate("/admin", { replace: true });
+      if (user.username !== data.username && user.password !== data.password){
+        setUser(data.username);
+        navigate("/username/"  , { replace: true });
+      }
     }
-
+      
+      )
   }
 
 const handleChange = (e) => {
@@ -89,7 +46,6 @@ const handlecloseform = () => {
   setClosed(true);
   navigate("/", { replace: true });
 }
-
 
 return (
   <div className={closed ? "closed" : "sign"}>
@@ -132,10 +88,6 @@ return (
             <button type="button" className="btn  w-50 rounded-pill btn-danger mt-2" onClick={handlecloseform}>
               بازگشت 
             </button>
-            {/* <div className="form-footer">
-               Don't have an account ?{" "}
-               <a href="Login.jsx">Login</a>
-            </div> */}
 
 
           </form>
@@ -148,8 +100,6 @@ return (
 );
 }
 export default SignIn;
-
-
 
 
 

@@ -15,7 +15,6 @@ class UserBase(BaseModel):
 class UserDisplay(BaseModel):
     username: str
     email: str
-    is_admin: bool
 
     class Config:
         from_orm = True

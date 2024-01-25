@@ -3,6 +3,7 @@ import "./addnewitem.css";
 import Books from '../db';
 import Alert from '../alert/alert';
 import axios from 'axios';
+import images from '../../images';
 
 const AddNewItem = () => {
 
@@ -15,10 +16,11 @@ const AddNewItem = () => {
         publisher:"",
         price: "",
         year:"",
-        Description:"",
+        about:"",
         image:"",
         id: ""
     });
+     
     const [selectedImage, setSelectedImage] = useState(null);
     const [alert, setAlert] = useState(false);
      const x = async (componentDidMount)=>{
@@ -29,6 +31,11 @@ const AddNewItem = () => {
          state.productName = data.name;
          state.productPrice = data.price;
          state.id = data.id;
+         state.category = data.category;
+         state.publisher = data.publisher;
+         state.writer = data.writer;
+         state.year = data.year;
+         images[(Books.id)-1] = data.image;
          //Set state
          this.setState(state);
      }
@@ -48,7 +55,7 @@ const AddNewItem = () => {
             publisher:"",
             price: "",
             year:"",
-            Description:"",
+            about:"",
             image:"",
             id: ""
         });
@@ -74,10 +81,8 @@ const AddNewItem = () => {
 
     
     const handleImageChange = (e) => {
-      if (e.target.files && e.target.files[0]) {
-        const file = e.target.files[0];
-        setSelectedImage(URL.createObjectURL(file));
-      }
+       e.preventDefault();
+       images[(newbook.id)].push(e.target.value);
     };
 
 
@@ -176,26 +181,29 @@ const AddNewItem = () => {
                           توضیحات  
                     </label>
                     <input
-                        name="description"
+                        name="about"
                         type="text"
                         className="form-control"
-                        value={newbook.Description}
+                        value={newbook.about}
                         onChange={handleChange}
 
                         aria-describedby="emailHelp"
                     />
                 </div>
                 <div className="mb-3 itemdata">
-                    <label htmlFor="productImage" className="form-label">
+                    <label htmlFor="productImage" className="form-label-1">
                            تصویر کتاب
                     </label>
                     <input
                         name="image"
-                        type="file"
+                        type="image"
+                        value={newbook.image}
                         onChange={handleImageChange}
-                        className="form-control"
+                        className="form-control small-input"
+                        
                     />
-                    {selectedImage && <img src={selectedImage} alt="Book" />}
+                    <img src={images[(newbook.id)-1]} alt='book' loading='lazy' /> 
+                     
                 </div>
                 <div className="mb-3 itemdata">
                     <label htmlFor="productPrice" className="form-label">

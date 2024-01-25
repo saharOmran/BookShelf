@@ -3,6 +3,7 @@ import { useState } from 'react';
 import './allbooks.css'
 import { Link } from 'react-router-dom'
 import images from './../../images';
+import axios from 'axios';
 
 const AllBooks = ({ books }) => {
 
@@ -37,66 +38,84 @@ const AllBooks = ({ books }) => {
         }
     ]
  
-    const priceOptions = [
-        {
-
-            value: 48000,
-            text: "0-50000هزارتومان"
-        },
-        {
-
-            value: 83000,
-            text: "50000 - 100000"
-        },
-        {
-
-            value: 135000,
-            text: "100000 - 150000"
-        },
-        {
-
-            value: 172000,
-            text: "150000 - 200000"
-        },
-        {
-
-            value: 190000,
-            text: "200000 - 250000"
-        }
-    ]
-
-
-    const handleSelectCategory = (e) => {
-        if (e.target.value === "All Books") {
-            setSelectedBooks(books)
-        } else {
-            selected = books.filter((book) => book.category === e.target.value)
-            setSelectedBooks(selected)
-        }
-    }
- 
-    const handleSelectPrice = (e) => {
      
-        if (e.target.value === "Price") {
-            setSelectedBooks(selected)
-        }
-        else {
-            const selectedwithPrice = selectedBooks.length > 0 ?
-                selectedBooks.filter((book) => book.price <= e.target.value)
-                : books.filter((book) => book.price <= e.target.value)
-            setSelectedBooks(selectedwithPrice)
-        }
+
+    // const handleSelectCategory = (e) => {
+    //     if (e.target.value === "All Books") {
+    //         setSelectedBooks(books)
+    //     } else {
+    //         selected = books.filter((book) => book.category === e.target.value)
+    //         setSelectedBooks(selected)
+    //     }
+    // }
+ 
+     
+    // const handleSelectBook = (e) => {
+
+        
+    //         const selectedwithname = selectedBooks.length > 0 ?
+    //             selectedBooks.filter((book) => book.name === e.target.value)
+    //             : books.filter((book) => book.name === e.target.value)
+    //         setSelectedBooks(selectedwithname)
+        
+    // }
+
+    // const handleSelectWriter = (e) => {
+    //         const selectedwithwriter = selectedBooks.length > 0 ?
+    //             selectedBooks.filter((book) => book.writer === e.target.value)
+    //             : books.filter((book) => book.writer === e.target.value)
+    //         setSelectedBooks(selectedwithwriter)
+    // }
+
+     
+
+const handleSelectCategory = (e) => {
+    if (e.target.value === "کتاب ها") {
+        axios.get(`http://127.0.0.1:5000/book/get_all_books/`)
+            .then(response => setSelectedBooks(response.data))
+            .catch(error => console.log(error));
+    } else {
+        axios.get(`http://127.0.0.2:8000/book/get_books_by_category/${e.target.value}`)
+            .then(response => setSelectedBooks(response.data))
+            .catch(error => console.log(error));
+    }
+}
+
+const handleSelectBook = (e) => {
+    const bookName = e.target.value;
+    axios.get(`http://127.0.0.1:8000/book/get_books_by_title/${bookName}`)
+        .then(response => setSelectedBooks(response.data))
+        .catch(error => console.log(error));
+}
+
+const handleSelectWriter = (e) => {
+    const writerName = e.target.value;
+    axios.get(`http://127.0.0.1:8000/book/get_book_by_author/${writerName}`)
+        .then(response => setSelectedBooks(response.data))
+        .catch(error => console.log(error));
+}
+ 
+
+     const handleReset = () => {
+        setSelectedBooks(books);
     }
 
-    const handleReset = () => {
-        setSelectedBooks(books)
-    }
+ 
 
     return (<>
         <section className="module-small mt-5">
             <div className="container">
                 <form className="row  mx-auto">
                     <div className="col-sm-4 mb-3">
+
+                    <div className="search" onChange={handleSelectBook}>
+                         <input className="form-control"
+                         type="text"
+                         placeholder= "نام محصول را وارد کنید"  
+                        />
+                    </div>
+                    </div>
+                    <div className="col-sm-4 mb-3">    
                         <select className="form-control" onChange={handleSelectCategory}>
                             <option>کتاب ها</option>
                             {BooksCategoryOptions.map((option) => {
@@ -106,13 +125,12 @@ const AllBooks = ({ books }) => {
                         </select>
                     </div>
                     <div className="col-sm-4 mb-3">
-                        <select className="form-control" onChange={handleSelectPrice}>
-                            <option>Price</option>
-                            {priceOptions.map((option) => {
-                                return <option key={option.value} value={option.value}>
-                                    {option.text}</option>
-                            })}
-                        </select>
+                    <div className="search" onChange={handleSelectWriter}>
+                         <input className="form-control"
+                         type="text"
+                         placeholder= "نام  نویسنده "  
+                        />
+                    </div>
                     </div>
                     
                     <div className="col-sm-4 mb-3">

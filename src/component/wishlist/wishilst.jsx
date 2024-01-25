@@ -45,7 +45,7 @@ const Wishlist = ({ books, onDelete }) => {
                                         </div>
                                     </div>
                                     <div className="d-flex flex-row align-items-center">
-                                        <span className="d-block ml-5">{`${book.price}$`}</span>
+                                        <span className="d-block ml-5">{`${book.price}هزارتومان`}</span>
                                         
                                         <i 
                                             className="fas fa-trash mx-4 delete"

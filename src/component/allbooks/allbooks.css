@@ -16,6 +16,11 @@ option {
     padding: 0px 2px 1px;
 }
 
+.search ::placeholder{
+    color: black; 
+}
+
+
 .btn-g {
     font-size: 12px;
     width: 80px;

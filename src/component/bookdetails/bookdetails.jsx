@@ -27,7 +27,13 @@ const BookDetails = ({ onSave , books , onWishlist}) => {
                             <h1 className="display-5 fw-bolder">{book.name}</h1>
                             <div className="fs-5 mb-5">
                                 <span className="text">{`قیمت : ${book.price}`}</span>
-                                <span className='m-5' style={{ color: "green" }}> 15%</span>
+                                <span className='m-5' style={{ color: "green" }}> 15%</span><br></br>
+                                <span className="detail">{`نویسنده : ${book.writer}`}</span><br></br>
+                                <span className="detail">{`انتشارات : ${book.publisher}`}</span><br></br>
+                                <span className="detail">{`سال انتشار : ${book.year}`}</span><br></br>
+                                <span className="detail">{`کتگوری : ${book.category}`}</span><br></br>
+                                 
+
                             </div>
                             <p className="lead mb-5 w-50" style={{ color: "black" }}> {`${book.about}`} </p>
                             <div className="d-flex ">

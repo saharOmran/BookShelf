@@ -2,7 +2,7 @@
     "users":
            [
             {
-                "username":"kimia",
+                "username":"sahar",
                 "password" : "1234",
                  "role" : "1"
             },
@@ -10,7 +10,11 @@
                 "username":"client",
                 "password" : "client",
                  "role" : "2"
+            },
+            {
+                "username":"kimia",
+                "password" : "1234",
+                 "role" : "3"
             }
-            
            ]
 }
