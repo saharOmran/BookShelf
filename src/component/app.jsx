@@ -19,6 +19,7 @@ import Footer from "./footer/footer";
 import './app.css'
 import AboutUs from './aboutus/aboutus';
 import Login from './signin/Login';
+import VerificationCode from "./signin/VerificationCode";
 const App = () => {
 
   const [books, setBooks] = useState(Books);
@@ -46,6 +47,8 @@ const App = () => {
     book.isInCart = true;
     book.count++;
     setBooks([...books], books);
+
+    fetch('http://127.0.0.1:8000/cart/add_to_cart/'+ book.id + '/' + book.count)
 
     // handleSubmit(book);
   };
@@ -114,6 +117,9 @@ const App = () => {
           <Route 
             path="/Login" 
             element={<Login />} />
+          <Route 
+            path="/VerificationCode" 
+            element={<VerificationCode />} />
           <Route
             path="/admin/edit"
             element={<Edit books={books} onDelete={handleDelete} />}
