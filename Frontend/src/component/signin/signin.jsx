@@ -9,6 +9,7 @@ import { ToastContainer, toast } from "react-toastify";
 const SignIn = ({ setUser }) => {
 
   const [closed, setClosed] = useState(false);
+  const [error, setError] = useState(null)
   const [data, setData] = useState({
     username: "",
     password: "",
@@ -17,22 +18,28 @@ const SignIn = ({ setUser }) => {
 
   let navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-     users.users.forEach((user) => {
-      if (user.username === data.username && user.password === data.password) {
-      setUser(data.username);
-      if (user.role === "1") {
-        navigate("/admin", { replace: true });
-      } 
+    if (data.username === '' || data.password === '') {
+      setError(1)
+      return;
     }
-      if (user.username !== data.username && user.password !== data.password){
-        setUser(data.username);
-        navigate("/username/"  , { replace: true });
-      }
-    }
+    setError(null)
+     const res = await fetch('http://127.0.0.1:8000/token', {
+      method: 'post',
+      headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'accept': 'application/json'
+      },
       
-      )
+      body: `grant_type=&username=${data.username}&password=${data.password}&scope=&client_id=&client_secret=`
+     })
+    
+     if (res.status === 200) {
+      setUser(data.username);
+      navigate("/", { replace: true });
+     }
+      
   }
 
 const handleChange = (e) => {
@@ -52,6 +59,7 @@ return (
     
     <section className="signIn">
       <div className="sign-box">
+        <div>{error !== null && 'error'}</div>
         <div className="myform">
           <form onSubmit={handleSubmit} className="sign-form">
             <div className="mb-4">
@@ -100,8 +108,3 @@ return (
 );
 }
 export default SignIn;
-
-
-
-
- 

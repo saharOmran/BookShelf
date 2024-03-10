@@ -1,10 +1,12 @@
-import { Link } from "react-router-dom";
+ 
 import { useNavigate} from "react-router-dom"
 import "./form.css";
-import { useState } from "react";
+ 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from 'axios';
+import React, { useState } from 'react';
+ // Assuming this is correctly imported
 
 
 // const Login = () => {
@@ -98,28 +100,28 @@ import axios from 'axios';
 
 // export default Login;
 // Filename - Form.js
-
  
-
 export default function Login() {
-	// States for registration
+	 
 	const [username, setUsername] = useState("");
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
-
-	// States for checking the errors
+    const [phoneNumber, setPhoneNumber] = useState('');
+ 
 	const [submitted, setSubmitted] = useState(false);
 	const [error, setError] = useState(false);
+    
 
-	// Handling the name change
- 
-	// Handling the email change
+    const handlePhoneNumberChange = (e) => {
+    	setPhoneNumber(e.target.value);
+		setSubmitted(false);
+    };
 	const handleEmail = (e) => {
 		setEmail(e.target.value);
 		setSubmitted(false);
 	};
 
-	// Handling the password change
+    let navigate = useNavigate();
 	const handlePassword = (e) => {
 		setPassword(e.target.value);
 		setSubmitted(false);
@@ -129,18 +131,35 @@ export default function Login() {
 		setSubmitted(false);
 	};
 
-	// Handling the form submission
-	const handleSubmit = (e) => {
+ 
+	const handleSubmit = async (e) => {
 		e.preventDefault();
-		if (username === "" || email === "" || password === "") {
+		if (username === "" || email === "" || password === "" || phoneNumber === "") {
 			setError(true);
 		} else {
+      /*const res = await fetch('http://127.0.0.1:8000/user/create', {
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          username: username,
+          email: email,
+          password: password,
+		  phoneNumber : phoneNumber
+        })
+      })*/
+	        
 			setSubmitted(true);
 			setError(false);
-		}
-	};
+			navigate("/VerificationCode", { replace: true });
+    //console.log(await res.JSON)
 
-	// Showing success message
+		}
+
+    
+	};
+ 
 	const successMessage = () => {
 		return (
 			<div
@@ -154,7 +173,7 @@ export default function Login() {
 		);
 	};
 
-	// Showing error message if error is true
+ 
 	const errorMessage = () => {
 		return (
       <div className="from-wrapper">
@@ -175,17 +194,14 @@ export default function Login() {
 			<div>
 				<h1>ساخت حساب کاربری</h1>
 			</div>
-
-			{/* Calling to the methods */}
+ 
 			<div className="messages">
 				{errorMessage()}
 				{successMessage()}
 			</div>
 
 			<form className="form">
-				{/* Labels and inputs for form data */}
-			 
-				{/* <label className="label">ایمیل</label> */}
+		 
 				<input
 					onChange={handleEmail}
 					className="input"
@@ -194,7 +210,7 @@ export default function Login() {
           placeholder="ایمیل"
           
 				/>
-          {/* <label className="label">نام کاربری</label> */}
+    
           <input
           value={username}
           onChange={(e) => setUsername(e.target.value)}
@@ -203,19 +219,41 @@ export default function Login() {
         />
 
 				 
-				<input
-					onChange={handlePassword}
-					className="input"
-					value={password}
-					type="password"
+		  <input
+		  onChange={handlePassword}
+		  className="input"
+		  value={password}
+	      type="password"
           placeholder=" رمز عبور"
-				/>
+		/>
+
+        <input
+		  className="input"
+		  type="tel" 
+          value={phoneNumber}
+          onChange={handlePhoneNumberChange}
+          placeholder= " شماره تلفن"
+		/>
+		
+        
 
 				<button onClick={handleSubmit} className="btn" type="submit">
-					ثبت نام
+					  ارسال
 				</button>
 			</form>
 		</div>
 	);
-}
 
+	 
+};
+
+
+
+
+
+ 
+
+ 
+ 
+
+ 
