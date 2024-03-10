@@ -31,6 +31,7 @@ def register(mobile_number: str, email: str, username: str, password: str):
     verification_service = VerificationService(redis.Redis())
     user_service = UserService(user_repo, verification_service)
     registration_info = user_service.register_user(mobile_number, email, username, password)
+    print("Registration info:", registration_info)
     return registration_info
 
 @app.post("/login/")
