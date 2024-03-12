@@ -9,12 +9,17 @@ class UserService:
         user = User(mobile_number=mobile_number, email=email, username=username, password=password)
         self.user_repo.save(user)
         verification_code = self.verification_service.send_verification_code(mobile_number)
+<<<<<<< HEAD
         logging.info(f"Verification code: {verification_code}")
         return {
             "phone number": mobile_number,  
             "verification_code": verification_code
         }
     
+=======
+        return verification_code
+        
+>>>>>>> 508f9de6300cdf263a4c4962a42fc9726aab983a
 
     def login(self, mobile_number, verification_code):
         if self.verification_service.verify_code(mobile_number, verification_code):
