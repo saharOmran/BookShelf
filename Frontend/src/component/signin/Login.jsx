@@ -100,152 +100,163 @@ import React, { useState } from 'react';
 
 // export default Login;
 // Filename - Form.js
- 
 export default function Login() {
-	 
 	const [username, setUsername] = useState("");
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
-    const [phoneNumber, setPhoneNumber] = useState('');
- 
+	const [phoneNumber, setPhoneNumber] = useState('');
+   
 	const [submitted, setSubmitted] = useState(false);
 	const [error, setError] = useState(false);
-    
-
-    const handlePhoneNumberChange = (e) => {
-    	setPhoneNumber(e.target.value);
-		setSubmitted(false);
-    };
-	const handleEmail = (e) => {
-		setEmail(e.target.value);
-		setSubmitted(false);
-	};
-
     let navigate = useNavigate();
+	const handlePhoneNumberChange = (e) => {
+	  setPhoneNumber(e.target.value);
+	  setSubmitted(false);
+	};
+	
+	const handleEmail = (e) => {
+	  setEmail(e.target.value);
+	  setSubmitted(false);
+	};
+  
 	const handlePassword = (e) => {
-		setPassword(e.target.value);
-		setSubmitted(false);
+	  setPassword(e.target.value);
+	  setSubmitted(false);
 	};
-  const handleUsername = (e) => {
-		setUsername(e.target.value);
-		setSubmitted(false);
+  
+	const handleUsername = (e) => {
+	  setUsername(e.target.value);
+	  setSubmitted(false);
 	};
-
- 
-	const handleSubmit = async (e) => {
-		e.preventDefault();
-		if (username === "" || email === "" || password === "" || phoneNumber === "") {
-			setError(true);
-		} else {
-      /*const res = await fetch('http://127.0.0.1:8000/user/create', {
-        method: 'post',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          username: username,
-          email: email,
-          password: password,
-		  phoneNumber : phoneNumber
-        })
-      })*/
-	        
+  
+	// const handleSubmit = async (e) => {
+	/*  e.preventDefault();
+	  if (username === "" || email === "" || password === "" || phoneNumber === "") {
+		setError(true);
+	  } else {
+		try {
+		  const response = await fetch('http://127.0.0.1:8000/register/Register', {
+			method: 'POST',
+			headers: {
+			  'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({
+			  username: username,
+			  email: email,
+			  password: password,
+			  phoneNumber: phoneNumber
+			})
+		  });
+		  if (response.ok) {
 			setSubmitted(true);
 			setError(false);
 			navigate("/VerificationCode", { replace: true });
-    //console.log(await res.JSON)
-
+		  } else {
+			console.error('Failed to create user:', response.statusText);
+			setError(true);
+		  }
+		} catch (error) {
+		  console.error('Error creating user:', error);
+		  setError(true);
 		}
+	  }*/
+	// };
 
-    
-	};
- 
+	const handleSubmit = async (e) => {
+		e.preventDefault();
+		if (username === "" || email === "" || password === "" || phoneNumber === "") {
+		  setError(true);
+		} else {
+		  try {
+			const queryParams = new URLSearchParams({
+			  mobile_number: phoneNumber,
+			  email: email,
+			  username: username,
+			  password: password
+			});
+			const response = await fetch(`http://127.0.0.1:8000/register/?${queryParams}`, {
+			  method: 'POST',
+			  headers: {
+				'Content-Type': 'application/json'
+			  }
+			});
+			if (response.ok) {
+			  const data = await response.json();
+			  setSubmitted(true);
+			  setError(false);
+			  navigate("/VerificationCode", { state: { verificationCode: data.verification_code } });
+			} else {
+			  console.error('Failed to create user:', response.statusText);
+			  setError(true);
+			}
+		  } catch (error) {
+			console.error('Error creating user:', error);
+			setError(true);
+		  }
+		}
+	  };
+	  
+  
 	const successMessage = () => {
-		return (
-			<div
-				className="success"
-				style={{
-					display: submitted ? "" : "none",
-				}}
-			>
-				<h1>حساب {username} با موفقیت ساخته شد </h1>
-			</div>
-		);
-	};
-
- 
-	const errorMessage = () => {
-		return (
-      <div className="from-wrapper">
-			<div
-				className="error"
-				style={{
-					display: error ? "" : "none",
-				}}
-			>
-				<h1>لطفا همه ی اطلاعات را وارد کنید</h1>
-			</div>
-      </div>
-		);
-	};
-
-	return (
-		<div className="form-wrapper">
-			<div>
-				<h1>ساخت حساب کاربری</h1>
-			</div>
- 
-			<div className="messages">
-				{errorMessage()}
-				{successMessage()}
-			</div>
-
-			<form className="form">
-		 
-				<input
-					onChange={handleEmail}
-					className="input"
-					value={email}
-					type="email"
-          placeholder="ایمیل"
-          
-				/>
-    
-          <input
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          type="text"
-          placeholder="نام کاربری"
-        />
-
-				 
-		  <input
-		  onChange={handlePassword}
-		  className="input"
-		  value={password}
-	      type="password"
-          placeholder=" رمز عبور"
-		/>
-
-        <input
-		  className="input"
-		  type="tel" 
-          value={phoneNumber}
-          onChange={handlePhoneNumberChange}
-          placeholder= " شماره تلفن"
-		/>
-		
-        
-
-				<button onClick={handleSubmit} className="btn" type="submit">
-					  ارسال
-				</button>
-			</form>
+	  return (
+		<div className="success" style={{ display: error ? "" : "none" }}>
+		  <h1>حساب {username} با موفقیت ساخته شد</h1>
 		</div>
+	  );
+	};
+  
+	const errorMessage = () => {
+	  return (
+		<div className="error" style={{ display: error ? "" : "none" }}>
+		  <h1>لطفا همه ی اطلاعات را وارد کنید</h1>
+		</div>
+	  );
+	};
+  
+	return (
+	  <div className="form-wrapper">
+		<div>
+		  <h1>ساخت حساب کاربری</h1>
+		</div>
+		<div className="messages">
+		  {errorMessage()}
+		  {successMessage()}
+		</div>
+		<form className="form">
+		  <input
+			onChange={handleEmail}
+			className="input"
+			value={email}
+			type="email"
+			placeholder="ایمیل"
+		  />
+		  <input
+			value={username}
+			onChange={handleUsername}
+			type="text"
+			placeholder="نام کاربری"
+		  />
+		  <input
+			onChange={handlePassword}
+			className="input"
+			value={password}
+			type="password"
+			placeholder=" رمز عبور"
+		  />
+		  <input
+			className="input"
+			type="tel"
+			value={phoneNumber}
+			onChange={handlePhoneNumberChange}
+			placeholder=" شماره تلفن"
+		  />
+		  <button onClick={handleSubmit} className="btn" type="submit">
+			ارسال
+		  </button>
+		</form>
+	  </div>
 	);
-
-	 
-};
+  };
 
 
 

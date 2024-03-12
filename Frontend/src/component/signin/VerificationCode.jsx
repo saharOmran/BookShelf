@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import "./verification.css";
- 
 
 const VerificationCode = () => {
   const [verificationCode, setVerificationCode] = useState('');
@@ -9,10 +8,25 @@ const VerificationCode = () => {
     setVerificationCode(e.target.value);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle verification code submission (e.g., send it to a server for validation)
-    console.log('Verification code submitted:', verificationCode);
+    try {
+      const response = await fetch('/verify', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ verificationCode })
+      });
+      if (response.ok) {
+        console.log('Verification code submitted successfully');
+        // Redirect or navigate to authenticated page
+      } else {
+        console.error('Failed to submit verification code');
+      }
+    } catch (error) {
+      console.error('Error submitting verification code:', error);
+    }
   };
 
   return (
