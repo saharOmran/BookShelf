@@ -20,7 +20,7 @@ const VerificationCode = () => {
       });
       if (response.ok) {
         console.log('Verification code submitted successfully');
-        // Redirect or navigate to authenticated page
+        
       } else {
         console.error('Failed to submit verification code');
       }
@@ -32,7 +32,7 @@ const VerificationCode = () => {
   return (
     <div className="verification-container">
       <form className="verification-form" onSubmit={handleSubmit}>
-        <label htmlFor="verificationCode">Verification Code:</label>
+        <label htmlFor="verificationCode">کد تایید:</label>
         <input 
           type="text" 
           id="verificationCode" 
@@ -41,7 +41,7 @@ const VerificationCode = () => {
           onChange={handleVerificationCodeChange}
           placeholder="Enter verification code"
         />
-        <button type="submit">Submit</button>
+        <button type="submit">ثبت نام</button>
       </form>
     </div>
   );
