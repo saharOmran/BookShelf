@@ -1,0 +1,8 @@
+version: "3.8"
+
+services:
+  kalato_back:
+    container_name: backend
+    ports:
+      - 1234:80
+    image: backend
