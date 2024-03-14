@@ -129,38 +129,6 @@ export default function Login() {
 	  setSubmitted(false);
 	};
   
-	// const handleSubmit = async (e) => {
-	/*  e.preventDefault();
-	  if (username === "" || email === "" || password === "" || phoneNumber === "") {
-		setError(true);
-	  } else {
-		try {
-		  const response = await fetch('http://127.0.0.1:8000/register/Register', {
-			method: 'POST',
-			headers: {
-			  'Content-Type': 'application/json'
-			},
-			body: JSON.stringify({
-			  username: username,
-			  email: email,
-			  password: password,
-			  phoneNumber: phoneNumber
-			})
-		  });
-		  if (response.ok) {
-			setSubmitted(true);
-			setError(false);
-			navigate("/VerificationCode", { replace: true });
-		  } else {
-			console.error('Failed to create user:', response.statusText);
-			setError(true);
-		  }
-		} catch (error) {
-		  console.error('Error creating user:', error);
-		  setError(true);
-		}
-	  }*/
-	// };
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
@@ -183,15 +151,16 @@ export default function Login() {
 			if (response.ok) {
 			  const data = await response.json();
 			  setSubmitted(true);
-			  setError(false);
-			  navigate("/VerificationCode", { state: { verificationCode: data.verification_code } });
+			  successMessage();
+			  
+			  navigate("/VerificationCode", { state: { phoneNumber: phoneNumber, verificationCode: data.verification_code } });
 			} else {
 			  console.error('Failed to create user:', response.statusText);
-			  setError(true);
+			  console.log('کد وارد شده نادرست است')
 			}
 		  } catch (error) {
 			console.error('Error creating user:', error);
-			setError(true);
+			//setError(true);
 		  }
 		}
 	  };
@@ -220,7 +189,6 @@ export default function Login() {
 		</div>
 		<div className="messages">
 		  {errorMessage()}
-		  {successMessage()}
 		</div>
 		<form className="form">
 		  <input
@@ -248,7 +216,7 @@ export default function Login() {
 			type="tel"
 			value={phoneNumber}
 			onChange={handlePhoneNumberChange}
-			placeholder=" شماره تلفن"
+			placeholder=" شماره همراه"
 		  />
 		  <button onClick={handleSubmit} className="btn" type="submit">
 			ارسال
