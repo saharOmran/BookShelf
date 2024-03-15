@@ -91,7 +91,9 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
 @app.post("/token")
-async def login_for_access_token(mobile_number: str, password: str):
+async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends()):
+    mobile_number = form_data.username 
+    password = form_data.password
     db = SessionLocal() 
     user_repo = UserRepository(db)
     user = authenticate_user(user_repo, mobile_number, password)
