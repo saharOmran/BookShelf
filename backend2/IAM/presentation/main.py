@@ -91,14 +91,15 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
 @app.post("/token")
-async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends()):
+async def login_for_access_token(mobile_number: str, password: str):
     db = SessionLocal() 
     user_repo = UserRepository(db)
-    user = authenticate_user(user_repo, form_data.username, form_data.password)
+    user = authenticate_user(user_repo, mobile_number, password)
     if not user:
-        raise HTTPException(status_code=401, detail="Incorrect username or password")
+        raise HTTPException(status_code=401, detail="Incorrect phone number or password")
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(data={"sub": user.mobile_number}, expires_delta=access_token_expires)
+    
     return {"access_token": access_token, "token_type": "bearer"}
 
 

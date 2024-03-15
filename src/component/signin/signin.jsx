@@ -17,36 +17,26 @@ const SignIn = ({ setUser }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  if (data.mobile_number === '' || data.password === '') {
-    setError(1)
-    return;
-  }
-  setError(null)
-
-  const queryParams = new URLSearchParams({
-    mobile_number: data.mobile_number,
-    password: data.password
-  });
-
-  try {
-    const res = await fetch(`http://127.0.0.1:8000/login2?${queryParams}`, {
+    if (data.mobile_number === '' || data.password === '') {
+      setError(1)
+      return;
+    }
+    setError(null)
+     const res = await fetch('http://127.0.0.1:8000/token', {
       method: 'post',
       headers: {
-        'accept': 'application/json'
+          'accept': 'application/json',
+          'Content-Type': 'application/x-www-form-urlencoded'
       },
+
+      body: `grant_type=&username=${data.mobile_number}&password=${data.password}&scope=&client_id=&client_secret=`
       
-    });
-    
-    if (res.ok) {
+     })
+
+     if (res.status === 200) {
       setUser(data.mobile_number);
       navigate("/", { replace: true });
-    } else {
-      throw new Error("Login failed");
-    }
-  } catch (error) {
-    console.error("Error logging in:", error.message);
-    setError("Login failed");
-  }
+     }
  
   };
 
