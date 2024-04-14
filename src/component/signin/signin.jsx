@@ -22,7 +22,7 @@ const SignIn = ({ setUser }) => {
       return;
     }
     setError(null)
-     const res = await fetch('http://127.0.0.1:8000/token', {
+     const res = await fetch('http://127.0.0.1:80/token', {
       method: 'post',
       headers: {
           'accept': 'application/json',
@@ -36,6 +36,9 @@ const SignIn = ({ setUser }) => {
      if (res.status === 200) {
       setUser(data.mobile_number);
       navigate("/", { replace: true });
+     }
+     if (data.mobile_number === 0){
+      navigate("/admin" , { replace: true })
      }
  
   };

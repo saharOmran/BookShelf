@@ -142,7 +142,7 @@ export default function Login() {
 			  username: username,
 			  password: password
 			});
-			const response = await fetch(`http://127.0.0.1:8000/register/?${queryParams}`, {
+			const response = await fetch(`http://127.0.0.1:80/register/?${queryParams}`, {
 			  method: 'POST',
 			  headers: {
 				'Content-Type': 'application/json'
