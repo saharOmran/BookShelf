@@ -5,6 +5,7 @@ from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 import jwt
 import redis
 from passlib.context import CryptContext
+import os
 
 from sqlalchemy import create_engine
 
@@ -42,13 +43,16 @@ SQLALCHEMY_DATABASE_URL = "sqlite:///./test.db"
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
+REDIS_HOST = os.getenv("REDIS_HOST", "172.18.0.2")
+REDIS_PORT = 6379
+redis_client = redis.StrictRedis(host=REDIS_HOST, port=REDIS_PORT, decode_responses=True)
 
 
 @app.post("/register/")
 def register(mobile_number: str, email: str, username: str, password: str):
     db = SessionLocal()
     user_repo = UserRepository(db)
-    verification_service = VerificationService(redis.Redis())
+    verification_service = VerificationService(redis_client)
     user_service = UserService(user_repo, verification_service)
     hashed_password = pwd_context.hash(password)
     registration_info = user_service.register_user(mobile_number, email, username, hashed_password)
@@ -60,7 +64,7 @@ def register(mobile_number: str, email: str, username: str, password: str):
 def login(mobile_number: str, verification_code: str):
     db = SessionLocal()
     user_repo = UserRepository(db)
-    verification_service = VerificationService(redis.Redis())
+    verification_service = VerificationService(redis.Redis(host=REDIS_HOST, port=REDIS_PORT))
     user_service = UserService(user_repo, verification_service)
     user = user_service.login(mobile_number, verification_code)
     if user:
