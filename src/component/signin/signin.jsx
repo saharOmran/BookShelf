@@ -32,7 +32,14 @@ const SignIn = ({ setUser }) => {
       
      })
 
-     if (res.status === 200) {
+   
+
+     if (res.status === 200 && data.mobile_number === '0911117783268') {
+      setUser(data.mobile_number);
+      navigate("/admin", { replace: true });
+     
+     }
+     else if(res.status === 200){
       setUser(data.mobile_number);
       navigate("/", { replace: true });
      }
