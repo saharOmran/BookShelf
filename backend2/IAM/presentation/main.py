@@ -1,5 +1,6 @@
 from datetime import timedelta
 import secrets
+from typing import List
 from fastapi import Depends, FastAPI, HTTPException
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 import jwt
@@ -21,7 +22,10 @@ from security import authenticate_user, create_access_token
 from constants import ALGORITHM, SECRET_KEY
 from starlette.responses import Response
 sys.path.append(str(Path(__file__).resolve().parent.parent))
-
+from application.cart_service import CartService
+from infrastructure.cart_repo import CartRepository
+from sqlalchemy.orm import Session
+from domain.cart_item import CartItem
 from infrastructure.user_repo import UserRepository
 from infrastructure.verification_service import VerificationService
 from application.user_service import UserService
@@ -135,7 +139,13 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(data={"sub": user.mobile_number}, expires_delta=access_token_expires)
     
-    return {"access_token": access_token, "token_type": "bearer"}
+    return {
+        "access_token": access_token,
+        "token_type": "bearer",
+        "email": user.email,
+        "username": user.username,
+        "phone_number": user.mobile_number
+    }
 
 
 @app.get("/users/me")
@@ -327,3 +337,205 @@ async def delete_file(file_id: str):
         raise HTTPException(status_code=404, detail="File not found")
 
 
+cart_repository = CartRepository(redis_client)
+cart_service = CartService(cart_repository)
+def verify_token(token: str):
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        user_id: str = payload.get("sub")
+        if user_id is None:
+            raise HTTPException(status_code=401, detail="Invalid authentication credentials")
+        return user_id
+    except jwt.ExpiredSignatureError:
+        raise HTTPException(status_code=401, detail="Token has expired")
+    except jwt.InvalidTokenError:
+        raise HTTPException(status_code=401, detail="Invalid token")
+    
+@app.post("/cart/add")
+async def add_to_cart(cart_item: CartItem, token: str = Depends(oauth2_scheme)):
+    user_id = verify_token(token)
+    cart_service.add_to_cart(user_id, cart_item)
+    return {"message": "Item added to cart successfully"}
+
+@app.get("/cart")
+async def get_cart(token: str = Depends(oauth2_scheme)):
+    user_id = verify_token(token)
+    cart_items = cart_service.get_cart(user_id)
+    return {"cart_items": cart_items}
+
+@app.delete("/cart/remove/{book_id}")
+async def remove_from_cart(book_id: str, token: str = Depends(oauth2_scheme)):
+    user_id = verify_token(token)
+    cart_service.remove_from_cart(user_id, book_id)
+    return {"message": "Item removed from cart successfully"}
+
+@app.delete("/cart/clear")
+async def clear_cart(token: str = Depends(oauth2_scheme)):
+    user_id = verify_token(token)
+    cart_service.clear_cart(user_id)
+    return {"message": "Cart cleared successfully"}
+
+@app.put("/cart/increase/{book_id}")
+async def increase_item_quantity(book_id: str, token: str = Depends(oauth2_scheme)):
+    user_id = verify_token(token)
+    cart_service.update_cart_item_quantity(user_id, book_id, 1)
+    return {"message": "Item quantity increased successfully"}
+
+@app.put("/cart/decrease/{book_id}")
+async def decrease_item_quantity(book_id: str, token: str = Depends(oauth2_scheme)):
+    user_id = verify_token(token)
+    cart_service.update_cart_item_quantity(user_id, book_id, -1)
+    return {"message": "Item quantity decreased successfully"}
+
+
+
+@app.post("/favorites/add")
+async def add_to_favorites(book_id: str, token: str = Depends(oauth2_scheme)):
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        user_id: str = payload.get("sub")
+        if user_id is None:
+            raise HTTPException(status_code=401, detail="Invalid authentication credentials")
+    except jwt.PyJWTError:
+        raise HTTPException(status_code=401, detail="Invalid token")
+
+    cart_service.add_to_favorites(user_id, book_id)
+    return {"message": "Book added to favorites successfully"}
+
+@app.get("/favorites")
+async def get_favorites(token: str = Depends(oauth2_scheme)):
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        user_id: str = payload.get("sub")
+        if user_id is None:
+            raise HTTPException(status_code=401, detail="Invalid authentication credentials")
+    except jwt.PyJWTError:
+        raise HTTPException(status_code=401, detail="Invalid token")
+
+    favorites = cart_service.get_favorites(user_id)
+    return {"favorites": favorites}
+
+@app.delete("/favorites/remove/{book_id}")
+async def remove_from_favorites(book_id: str, token: str = Depends(oauth2_scheme)):
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        user_id: str = payload.get("sub")
+        if user_id is None:
+            raise HTTPException(status_code=401, detail="Invalid authentication credentials")
+    except jwt.PyJWTError:
+        raise HTTPException(status_code=401, detail="Invalid token")
+
+    cart_service.remove_from_favorites(user_id, book_id)
+    return {"message": "Book removed from favorites successfully"}
+
+@app.post("/payment")
+async def make_payment(token: str = Depends(oauth2_scheme)):
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        user_id: str = payload.get("sub")
+        if user_id is None:
+            raise HTTPException(status_code=401, detail="Invalid authentication credentials")
+    except jwt.PyJWTError:
+        raise HTTPException(status_code=401, detail="Invalid token")
+
+    cart_items = cart_service.get_cart(user_id)
+    if not cart_items:
+        raise HTTPException(status_code=400, detail="Cart is empty")
+    # Simulate payment processing
+    cart_service.clear_cart(user_id)
+    return {"message": "Payment successful and cart cleared"}
+
+
+# Book Endpoints
+@app.get("/book/get_book/{id}", response_model=Book)
+async def get_book(id: str):
+    try:
+        book = book_service.get_book_by_id(id)
+        if not book:
+            raise HTTPException(status_code=404, detail="Book not found")
+        return book
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/book/get_all_books", response_model=List[Book])
+async def get_all_books():
+    try:
+        books = book_service.get_all_books()
+        return books
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/book/get_books_by_title/{title}", response_model=List[Book])
+async def get_books_by_title(title: str):
+    try:
+        books = book_service.get_books_by_title(title)
+        return books
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/book/get_books_by_author/{author}", response_model=List[Book])
+async def get_books_by_author(author: str):
+    try:
+        books = book_service.get_books_by_author(author)
+        return books
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/book/get_books_by_category/{category}", response_model=List[Book])
+async def get_books_by_category(category: str):
+    try:
+        books = book_service.get_books_by_category(category)
+        return books
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/book/get_book/{id}", response_model=Book)
+async def get_book(id: str):
+    try:
+        book = book_service.get_book_by_id(id)
+        if not book:
+            raise HTTPException(status_code=404, detail="Book not found")
+        book["id"] = str(book["_id"])  
+        return Book(**book)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/book/get_all_books", response_model=List[Book])
+async def get_all_books():
+    try:
+        books = book_service.get_all_books()
+        for book in books:
+            book["id"] = str(book["_id"]) 
+        return [Book(**book) for book in books]
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/book/get_books_by_title/{title}", response_model=List[Book])
+async def get_books_by_title(title: str):
+    try:
+        books = book_service.get_books_by_title(title)
+        for book in books:
+            book["id"] = str(book["_id"])  
+        return [Book(**book) for book in books]
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/book/get_books_by_author/{author}", response_model=List[Book])
+async def get_books_by_author(author: str):
+    try:
+        books = book_service.get_books_by_author(author)
+        for book in books:
+            book["id"] = str(book["_id"])  
+        return [Book(**book) for book in books]
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/book/get_books_by_category/{category}", response_model=List[Book])
+async def get_books_by_category(category: str):
+    try:
+        books = book_service.get_books_by_category(category)
+        for book in books:
+            book["id"] = str(book["_id"])  
+        return [Book(**book) for book in books]
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))

@@ -11,17 +11,23 @@ class BookService:
     
     def get_book_by_id(self, book_id):
         return self.collection.find_one({"_id": ObjectId(book_id)})
+
+    def get_all_books(self):
+        return list(self.collection.find())
+
+    def get_books_by_title(self, title):
+        return list(self.collection.find({"name": {"$regex": title, "$options": "i"}}))
+
+    def get_books_by_author(self, author):
+        return list(self.collection.find({"writers_name": {"$regex": author, "$options": "i"}}))
+
+    def get_books_by_category(self, category):
+        return list(self.collection.find({"category": {"$regex": category, "$options": "i"}}))
     
     def delete_book(self, book_id):
         result = self.collection.delete_one({"_id": ObjectId(book_id)})
-        if result.deleted_count == 1:
-            return True
-        else:
-            return False
+        return result.deleted_count == 1
         
     def update_book(self, book_id, updated_data):
         result = self.collection.update_one({"_id": ObjectId(book_id)}, {"$set": updated_data})
-        if result.modified_count == 1:
-            return True
-        else:
-            return False
+        return result.modified_count == 1

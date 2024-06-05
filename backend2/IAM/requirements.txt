@@ -8,3 +8,5 @@ sqlalchemy==1.4.0
 python-multipart
 pymongo
 aiofiles
+tenacity
+pybreaker

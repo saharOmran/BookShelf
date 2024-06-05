@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  grpc_server:
+    build: ./gRPC/server
+    ports:
+      - "50051:50051"
+    depends_on:
+      - grpc_client
+
+  grpc_client:
+    build: ./gRPC/client
