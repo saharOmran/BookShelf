@@ -10,3 +10,4 @@ pymongo
 aiofiles
 tenacity
 pybreaker
+requests

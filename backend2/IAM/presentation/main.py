@@ -1,4 +1,6 @@
 from datetime import timedelta
+from distutils import errors
+import logging
 import secrets
 from typing import List
 from fastapi import Depends, FastAPI, HTTPException
@@ -43,7 +45,13 @@ from domain.book import Book
 from application.book_service import BookService
 from infrastructure.book_repo import BookRepository
 from bson import ObjectId
+import requests
+import pybreaker
+from tenacity import retry, stop_after_attempt, wait_fixed
 
+# Configure logger
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
 
 app = FastAPI()
 MONGO_HOST = os.getenv("MONGO_HOST", "localhost")
@@ -80,6 +88,27 @@ REDIS_HOST = os.getenv("REDIS_HOST", "172.18.0.2")
 REDIS_PORT = 6379
 redis_client = redis.StrictRedis(host=REDIS_HOST, port=REDIS_PORT, decode_responses=True)
 
+# Circuit Breaker Configuration
+circuit_breaker = pybreaker.CircuitBreaker(fail_max=5, reset_timeout=60)
+
+# Retry Configuration
+@retry(stop=stop_after_attempt(3), wait=wait_fixed(2))
+def call_external_service(url):
+    response = requests.get(url, timeout=5)
+    response.raise_for_status()
+    return response
+
+# Token expiry time
+ACCESS_TOKEN_EXPIRE_MINUTES = 30
+
+# Password hashing
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
+# Service Instances
+cart_repository = CartRepository(redis_client)
+cart_service = CartService(cart_repository)
+book_repository = BookRepository(db)
+book_service = BookService(db)
 
 @app.post("/register/")
 def register(mobile_number: str, email: str, username: str, password: str):
@@ -89,7 +118,7 @@ def register(mobile_number: str, email: str, username: str, password: str):
     user_service = UserService(user_repo, verification_service)
     hashed_password = pwd_context.hash(password)
     registration_info = user_service.register_user(mobile_number, email, username, hashed_password)
-    print(registration_info)
+    logging.info(f"Registration info: {registration_info}")
     return registration_info
 
 
@@ -127,25 +156,36 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
 
-@app.post("/token")
-async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends()):
-    mobile_number = form_data.username 
-    password = form_data.password
-    db = SessionLocal() 
+@circuit_breaker
+def authenticate_and_create_token(db, mobile_number, password):
     user_repo = UserRepository(db)
     user = authenticate_user(user_repo, mobile_number, password)
     if not user:
         raise HTTPException(status_code=401, detail="Incorrect phone number or password")
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(data={"sub": user.mobile_number}, expires_delta=access_token_expires)
-    
-    return {
-        "access_token": access_token,
-        "token_type": "bearer",
-        "email": user.email,
-        "username": user.username,
-        "phone_number": user.mobile_number
-    }
+    return access_token, user
+
+@app.post("/token")
+async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends()):
+    db = SessionLocal()
+    try:
+        access_token, user = authenticate_and_create_token(db, form_data.username, form_data.password)
+        return {
+            "access_token": access_token,
+            "token_type": "bearer",
+            "email": user.email,
+            "username": user.username,
+            "phone_number": user.mobile_number
+        }
+    except pybreaker.CircuitBreakerError:
+        raise HTTPException(status_code=503, detail="Service unavailable due to high failure rate. Please try again later.")
+    except HTTPException as e:
+        raise e
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Internal server error: {str(e)}")
+    finally:
+        db.close()
 
 
 @app.get("/users/me")
@@ -208,8 +248,6 @@ async def add_book(
         raise HTTPException(status_code=500, detail=str(e))
  
 
-
-
 # Update Book Endpoint
 @app.put("/books/{book_id}")
 async def edit_book(
@@ -247,6 +285,7 @@ async def edit_book(
         book_service.update_book(book_id, existing_book)
         return {"message": "Book updated successfully"}
     except Exception as e:
+        logging.error(f"Error editing book: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 
@@ -269,6 +308,7 @@ async def delete_book(book_id: str = pth(..., title="The ID of the book to delet
 
         return {"message": "Book deleted successfully"}
     except Exception as e:
+        logging.error(f"Error deleting book: {e}")
         raise HTTPException(status_code=500, detail=str(e))
     
 
