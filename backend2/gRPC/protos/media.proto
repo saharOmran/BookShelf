@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package media;
+
+// Define the media messages
+message Media {
+    int32 id = 1;
+    string title = 2;
+    string url = 3;
+}
+
+message GetMediaRequest {
+    int32 id = 1;
+}
+
+message GetMediaResponse {
+    Media media = 1;
+}
+
+message CreateMediaRequest {
+    Media media = 1;
+}
+
+message CreateMediaResponse {
+    Media media = 1;
+}
+
+// Define the media service
+service MediaService {
+    rpc GetMedia (GetMediaRequest) returns (GetMediaResponse);
+    rpc CreateMedia (CreateMediaRequest) returns (CreateMediaResponse);
+}

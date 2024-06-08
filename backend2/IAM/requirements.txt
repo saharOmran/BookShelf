@@ -6,3 +6,8 @@ uvicorn==0.15.0
 passlib==1.7.4
 sqlalchemy==1.4.0
 python-multipart
+pymongo
+aiofiles
+tenacity
+pybreaker
+requests

@@ -7,93 +7,72 @@ import images from '../../images';
 
 const AddNewItem = () => {
 
-
-
-    const [newbook, setNewBook] = useState({
+    const [newBook, setNewBook] = useState({
         name: "",
-        category:"",
-        writer:"",
-        publisher:"",
-        price: "",
-        year:"",
-        about:"",
-        image:"",
-        id: ""
+        category: "",
+        writer: "",
+        publisher: "",
+        price: 0,
+        year: 0,
+        about: "",
+        image: null,
+        id: 0
     });
-     
-    const [selectedImage, setSelectedImage] = useState(null);
+
     const [alert, setAlert] = useState(false);
-     const x = async (componentDidMount)=>{
-         let { data } = await axios.get("http://localhost:3004/Books/");
-         //Clone
-         const state = { ...this.state };
-         //Edit
-         state.productName = data.name;
-         state.productPrice = data.price;
-         state.id = data.id;
-         state.category = data.category;
-         state.publisher = data.publisher;
-         state.writer = data.writer;
-         state.year = data.year;
-         images[(Books.id)-1] = data.image;
-         //Set state
-         this.setState(state);
-     }
+    const [responseBody, setResponseBody] = useState("");
 
     const handleChange = (e) => {
-        //Edit
         setNewBook({
-            ...newbook, [e.target.name]: e.target.value,
+            ...newBook,
+            [e.target.name]: e.target.value,
         });
     };
 
-    const resetInputField = () => {
+    const handleFileChange = (event) => {
         setNewBook({
-            name: "",
-            category:"",
-            writer:"",
-            publisher:"",
-            price: "",
-            year:"",
-            about:"",
-            image:"",
-            id: ""
+            ...newBook,
+            image: event.target.files[0],
         });
     };
-
-
-
-
+ 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        Books.push(newbook);
-        setAlert(true);
+        const formData = new FormData();
+        formData.append('name', newBook.name);
+        formData.append('category', newBook.category);
+        formData.append('writers_name', newBook.writer);
+        formData.append('publisher_name', newBook.publisher);
+        formData.append('price', newBook.price);
+        formData.append('year_of_publication', newBook.year);
+        formData.append('explanation', newBook.about);
+        formData.append('image', newBook.image);
+        formData.append('book_number', newBook.id);
 
-        //Call Backend
-        // const obj = {...this.state,count: 0};
-        // await axios.post("https://my-json-server.typicode.com/PeterRizek009/PeterRizek009-BookDB/Books", obj);
-        // console.log("Book added");
+        try {
+            
+            const response = await axios.post("http://127.0.0.1:80/books/", formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    'accept': 'application/json'
+                }
+            });
+            console.log(response.data);
+            setResponseBody(response.data); // Update response body state variable
+            setAlert(true);
+             // Response containing book_id and image_url
+        } catch (error) {
+            console.error('Error adding book:', error);
+        }
     };
-
-    const handleReset = (e) => {
-        console.log(e.target.value);
-    }
-
     
-    const handleImageChange = (e) => {
-       e.preventDefault();
-       images[(newbook.id)].push(e.target.value);
-    };
 
-
-    
     return (
         <React.Fragment>
             {alert ?
-                <Alert message={"کتاب با موفقیت اضافه شد!"} />
+                <Alert message={responseBody.data} /> // Render response body
                 : null}
             <div className="title my-3 text-center">
-                 
             </div>
             <form className="editbooks" onSubmit={handleSubmit}>
                 <div className="mb-3 itemdata">
@@ -104,9 +83,8 @@ const AddNewItem = () => {
                         name="name"
                         type="text"
                         className="form-control"
-                        value={newbook.name}
+                        value={newBook.name}
                         onChange={handleChange}
-
                         aria-describedby="emailHelp"
                     />
                 </div>
@@ -118,9 +96,8 @@ const AddNewItem = () => {
                         name="category"
                         type="text"
                         className="form-control"
-                        value={newbook.category}
+                        value={newBook.category}
                         onChange={handleChange}
-
                         aria-describedby="emailHelp"
                     />
                 </div>
@@ -132,9 +109,8 @@ const AddNewItem = () => {
                         name="writer"
                         type="text"
                         className="form-control"
-                        value={newbook.writer}
+                        value={newBook.writer}
                         onChange={handleChange}
-
                         aria-describedby="emailHelp"
                     />
                 </div>
@@ -146,9 +122,8 @@ const AddNewItem = () => {
                         name="publisher"
                         type="text"
                         className="form-control"
-                        value={newbook.publisher}
+                        value={newBook.publisher}
                         onChange={handleChange}
-
                         aria-describedby="emailHelp"
                     />
                 </div>
@@ -158,7 +133,7 @@ const AddNewItem = () => {
                     </label>
                     <input
                         name="price"
-                        value={newbook.price}
+                        value={newBook.price}
                         onChange={handleChange}
                         type="number"
                         className="form-control"
@@ -166,11 +141,11 @@ const AddNewItem = () => {
                 </div>
                 <div className="mb-3 itemdata">
                     <label htmlFor="productYear" className="form-label">
-                          سال انتشار
+                        سال انتشار
                     </label>
                     <input
                         name="year"
-                        value={newbook.year}
+                        value={newBook.year}
                         onChange={handleChange}
                         type="number"
                         className="form-control"
@@ -178,32 +153,27 @@ const AddNewItem = () => {
                 </div>
                 <div className="mb-3 itemdata">
                     <label htmlFor="productDescription" className="form-label">
-                          توضیحات  
+                        توضیحات  
                     </label>
                     <input
                         name="about"
                         type="text"
                         className="form-control"
-                        value={newbook.about}
+                        value={newBook.about}
                         onChange={handleChange}
-
                         aria-describedby="emailHelp"
                     />
                 </div>
                 <div className="mb-3 itemdata">
                     <label htmlFor="productImage" className="form-label-1">
-                           تصویر کتاب
+                        تصویر کتاب
                     </label>
                     <input
                         name="image"
-                        type="image"
-                        value={newbook.image}
-                        onChange={handleImageChange}
+                        type="file"
+                        onChange={handleFileChange}
                         className="form-control small-input"
-                        
                     />
-                    <img src={images[(newbook.id)-1]} alt='book' loading='lazy' /> 
-                     
                 </div>
                 <div className="mb-3 itemdata">
                     <label htmlFor="productPrice" className="form-label">
@@ -211,24 +181,21 @@ const AddNewItem = () => {
                     </label>
                     <input
                         name="id"
-                        value={newbook.id}
+                        value={newBook.id}
                         onChange={handleChange}
                         type="number"
                         className="form-control"
                     />
-    
                 </div>
                 <div className="itemdata d-inline-flex">
                     <button type="submit" className="btn btn-danger px-5 mx-2 rounded-pill " >
                         افزودن
                     </button>
-                    {/* <button onClick={resetInputField} className="btn btn-danger px-5 rounded-pill" onSubmit={handleReset}>
-                        Reset
-                    </button> */}
                 </div>
             </form>
-        </React.Fragment>);
-
+             
+        </React.Fragment>
+    );
 }
 
 export default AddNewItem;

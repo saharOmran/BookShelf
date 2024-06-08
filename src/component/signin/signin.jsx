@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import "./signin.css"
-import users from "../users.json"
 import { useNavigate } from "react-router"
 import { ToastContainer, toast } from "react-toastify";
  
@@ -33,7 +32,14 @@ const SignIn = ({ setUser }) => {
       
      })
 
-     if (res.status === 200) {
+   
+
+     if (res.status === 200 && data.mobile_number === '0911117783268') {
+      setUser(data.mobile_number);
+      navigate("/admin", { replace: true });
+     
+     }
+     else if(res.status === 200){
       setUser(data.mobile_number);
       if (data.mobile_number === '09117783268'){
       navigate("/admin" , { replace: true })
