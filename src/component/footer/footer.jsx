@@ -26,8 +26,10 @@ const Footer = () => {
             </div>
             <div className="col-lg-4 col-md-6 col-sm-6 mb-5">
                <img src="../iconbook.jpg"></img>
+                
               
             </div>
+             
           </div>
         </div>
         

@@ -35,15 +35,19 @@ const SignIn = ({ setUser }) => {
 
      if (res.status === 200) {
       setUser(data.mobile_number);
+      if (data.mobile_number === '09117783268'){
+      navigate("/admin" , { replace: true })
+      }
+      else{
       navigate("/", { replace: true });
      }
-     if (data.mobile_number === 0){
-      navigate("/admin" , { replace: true })
      }
+     
  
   };
 
   const handleChange = (e) => {
+    
     //set new data after change 
     setData({
       ...data,
@@ -52,6 +56,7 @@ const SignIn = ({ setUser }) => {
   };
 
   const handlecloseform = () => {
+    
     setClosed(true);
     navigate("/", { replace: true });
   };

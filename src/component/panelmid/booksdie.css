@@ -1,0 +1,127 @@
+.diesection {
+  background-color: rgba(142, 144, 144, 0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.book-section {
+  display: flex;
+  flex-direction: column;
+  max-width: 1000px;
+  background-color: #ffffff;
+  border-radius: 25px;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.book-section:hover {
+  transform: scale(1.05);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.image-container {
+  display: flex;
+  flex:1;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  padding: 20px;
+}
+
+.book-image {
+  width: 100%;
+  height: auto;
+  max-height: 300px;
+  object-fit: cover;
+  border-radius: 15px;
+}
+
+.content {
+  padding: 30px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.content h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #34495e;
+  font-weight: bold;
+  text-align: center;
+}
+
+.book-list-button {
+  background-color: #8e44ad;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  align-self: center;
+  box-shadow: 0 8px 16px rgba(142, 68, 173, 0.2);
+}
+
+.book-list-button:hover {
+  background-color: #732d91;
+}
+
+.discount-badge {
+  background-color: #e74c3c;
+  padding: 10px 20px;
+  border-radius: 12px;
+  font-size: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 280px;
+  margin-top: 20px;
+  color: white;
+  font-weight: bold;
+  align-self: center;
+  box-shadow: 0 8px 16px rgba(231, 76, 60, 0.2);
+}
+
+.discount-badge span {
+  margin-right: 8px;
+}
+
+/* Media Queries */
+@media (min-width: 768px) {
+  .book-section {
+    flex-direction: row;
+    height: 300px;
+    
+  }
+
+  .book-image {
+    height: 200px;
+    border-bottom-left-radius: 0;
+  }
+
+  .content {
+    padding: 50px !important;
+  }
+
+  .content h1 {
+    font-size: 34px;
+    margin-bottom: 30px;
+  }
+
+  .book-list-button {
+    padding: 15px 30px;
+    font-size: 18px;
+  }
+
+  .discount-badge {
+    padding: 15px 25px;
+    font-size: 16px;
+    max-width: 320px;
+    margin-top: 30px;
+  }
+}

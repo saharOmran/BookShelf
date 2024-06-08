@@ -16,8 +16,10 @@ import Wishlist from "./wishlist/wishilst";
 import AddNewCategory from "./addnewcategory/addnewcategory";
 import AddNewWriter from "./addnewwriter/addnewwriter";
 import Footer from "./footer/footer";
-import './app.css'
+import PanelMid from "./panelmid/panelmid";
+import './app.css';
 import AboutUs from './aboutus/aboutus';
+import UserProfile from './user/UserProfile';
 import Login from './signin/Login';
 import VerificationCode from "./signin/VerificationCode";
 const App = () => {
@@ -114,12 +116,17 @@ const App = () => {
             path="/aboutus"
             element={<AboutUs />}
           />
+          
           <Route 
             path="/Login" 
             element={<Login />} />
           <Route 
             path="/VerificationCode" 
             element={<VerificationCode />} />
+
+          <Route 
+            path="/UserProfile" 
+            element={<UserProfile />} />
           <Route
             path="/admin/edit"
             element={<Edit books={books} onDelete={handleDelete} />}
@@ -128,6 +135,7 @@ const App = () => {
             path="/allbooks" books
             element={<AllBooks books={books} />}
           />
+           
           <Route
             path="/admin/addnewitem"
             element={<AddNewItem books={books} setBooks={setBooks} />}

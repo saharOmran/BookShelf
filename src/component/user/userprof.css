@@ -1,0 +1,72 @@
+.profile-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 50px;
+}
+
+h1{
+    display: flex;
+    justify-content: center;
+    padding-top: 30px;
+    color: slategray;
+    font-family:   'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+}
+
+.avatar {
+    margin-right: 20px;
+}
+
+.avatar img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #fff; /* Add a thicker border around the avatar */
+    margin-left: 30px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add a subtle box shadow */
+}
+
+.avatar{
+    margin-top:-60px;
+}
+
+.user-details {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5; /* Add a light gray background color for user details */
+    padding: 20px;
+    border-radius: 8px; /* Add border radius to user details container */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    margin-bottom: 70px;
+    width: 350px;
+}
+
+.user-details p {
+    margin-bottom: 10px;
+    color: #333; /* Set text color to dark gray */
+}
+
+.user-details strong {
+    color: #666; /* Set color for strong elements to slightly lighter gray */
+}
+
+.link {
+    color: cadetblue; /* Set link color to blue */
+    text-decoration: none;
+    font-weight: bold;
+    font-family:   'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    padding: 10px 20px; /* Add padding to the button */
+    background-color: #f7f7f7; /* Set background color */
+    border: 2px solid cadetblue; /* Add border */
+    border-radius: 5px; /* Add border radius */
+    transition: background-color 0.3s, color 0.3s; /* Add transition effect */
+}
+
+.link:hover {
+    background-color: cadetblue; /* Change background color on hover */
+    color: #fff; /* Change text color on hover */
+}

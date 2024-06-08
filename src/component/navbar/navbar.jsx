@@ -3,7 +3,6 @@ import { NavLink, Link } from 'react-router-dom';
 import NavTop from "./navtop";
 import './navbar.css'
 import Books from "../db";
-import User from "../user/user";
 import useSticky from "./useSticky";
 
 const Navbar = ({ user, setUser }) => {
@@ -56,8 +55,13 @@ const Navbar = ({ user, setUser }) => {
                   </li>
 
                   <li className="nav-item mx-lg-4">
+                    <Link className="nav-link" aria-current="page" to={"/UserProfile"}>پروفایل</Link>
+                  </li>
+
+                  <li className="nav-item mx-lg-4">
                     <Link className="nav-link" to={"/allbooks"}>کتاب ها</Link>
                   </li>
+                  
                   <li className="nav-item mx-lg-4">
                     <Link className="nav-link" to={"/login"}>ثبت نام</Link>
                   </li>
@@ -81,7 +85,7 @@ const Navbar = ({ user, setUser }) => {
             </NavLink>
             <div className="d-inline-flex">
               {user ?
-                <User user={user} setUser={setUser} />
+                <user user={user} setUser={setUser} />
                 :
                 <NavLink className="nav-icon position-relative text-decoration-none mx-5" to={'./signin'}>
                   <i className="fa fa-fw fa-user text-dark mr-3" />

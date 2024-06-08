@@ -1,0 +1,129 @@
+.container-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  
+  padding: 20px;
+  background-color: rgba(142, 144, 144 , 0.1);
+}
+
+.section-container {
+  width: 100%;
+  max-width: 1115px;
+ 
+  background-color: white;
+  display: flex;
+  justify-content: space-between; /* Ensure articles are spaced between each other */
+  align-items: center;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.article {
+  display: flex;
+  flex-direction: column;
+  width: 48%;
+  margin-top: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.img-title {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.article .title {
+  color: cadetblue;
+  font-size: 1.2em;
+  margin-left: 10px;
+}
+
+.article-image {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.description {
+  font-size: 0.9em;
+  color: #666;
+}
+
+.buttons {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.buttons .btn {
+  padding: 10px 12px;
+  border: none;
+  border-radius: 5px;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.buttons .btn:hover {
+  background-color: #2980b9;
+}
+
+@media screen and (max-width: 1200px) {
+  .section-container {
+      flex-wrap: wrap; /* Allow wrapping on smaller screens */
+  }
+  .article {
+      width: 48%;
+      margin: 10px 0;
+  }
+  .buttons {
+      margin: 13px auto;
+  }
+}
+
+@media screen and (max-width: 700px) {
+ 
+  .section-container {
+      flex-wrap: wrap; /* Allow wrapping on smaller screens */
+      justify-content: space-between;
+      flex-direction: row;
+   }
+  .article {
+      width: 47%;
+      height: 350px;
+      flex-direction: column;
+      text-align: center;
+    
+  }
+  .img-title {
+    flex-direction: column;      
+    align-items: center;
+    
+  }
+  .article-image {
+      width: 70px;
+      height: 70px;
+      margin-right: 10px;
+  }
+  .title {
+      font-size: 0.9em !important;
+      margin-left: 10px;
+
+  }
+  .description {
+      font-size: 0.8em;
+      margin-left: 10px;
+      
+  }
+  .buttons {
+      margin: 13px auto;
+  }
+}

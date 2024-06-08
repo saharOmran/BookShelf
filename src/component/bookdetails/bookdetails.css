@@ -21,6 +21,36 @@
     width: 80px;
 }
 
+.author-books {
+    margin-top: 30px;
+}
+
+.author-books h2 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.author-books ul {
+    list-style: none;
+    padding: 0;
+}
+
+.author-books ul li {
+    margin-bottom: 10px;
+}
+
+.author-books button {
+    margin-top: 20px;
+    display: none; /* Initially hide the button */
+}
+
+@media (min-width: 900px) {
+    .author-books button {
+        display: block; /* Show the button when page width is more than 900px */
+    }
+}
+
 /* .detail-about{
     width: 100px;
 } */

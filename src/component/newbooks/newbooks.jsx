@@ -4,6 +4,7 @@ import images from '../../images';
 import { Link } from "react-router-dom";
 import './newbooks.css'
 import { motion } from "framer-motion"
+import { color } from "@chakra-ui/react";
 
 
 const NewBooks = ({ books }) => {
@@ -53,17 +54,17 @@ return (
                           <Link to={`/bookdetails/${book.id}`} style={{ textDecoration: 'none' }}>
                             <h4>{book.name}</h4>
                           </Link>
+                          <hr></hr>
+                          <div className="price-icon">
                           <p className="item-price">
-                            <strike>{book.price}هزارتومان</strike>
-                            <span>{book.price - (2)}هزارتومان</span>
+                            <span>{book.price}هزارتومان</span>
+                             
                           </p>
+                           
+                            <i className="fa fa-fw fa-cart-arrow-down text-dark" />
+                          </div> 
                         </div>
-                        <div className="star-rating">
-                          <ul className="list-inline">
-                            {createStars()}
-                          </ul>
-                        </div>
-
+                        
                       </div>
                     </div>
                   </motion.div>
