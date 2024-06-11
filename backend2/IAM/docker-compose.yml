@@ -3,6 +3,9 @@ version: '3.8'
 networks:
   my_network:
 
+volumes:
+  mongo_data:
+
 services:
   redis:
     image: redis
@@ -16,7 +19,7 @@ services:
     ports:
       - "27017:27017"
     volumes:
-      - /Users/nioushamaghsoudnia/data/db:/data/db
+      - mongo_data:/data/db
     networks:
       - my_network
 
@@ -36,5 +39,3 @@ services:
       REDIS_PORT: 6379
     networks:
       - my_network
-
-
