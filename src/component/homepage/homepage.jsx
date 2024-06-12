@@ -9,7 +9,7 @@ import Gifs from '../header/gifs';
 import Politz from '../porforoshtarin/politz';  
 import Lesson from '../porforoshtarin/Lesson';
 import Kodakan from '../porforoshtarin/Kodakan';
- 
+import AuthorsCarousel from '../panelmid/AuthorsCarousel';
 
 
 const HomePage = ({books }) => {
@@ -24,6 +24,7 @@ const HomePage = ({books }) => {
         <Politz books={books}  />
         <PanelMid></PanelMid>
         <Kodakan books={books}  />
+        <AuthorsCarousel ></AuthorsCarousel> 
 
         <BooksView books={books}  />
         

@@ -100,14 +100,15 @@ services:
     networks:
       - my_network
 
-  grpc_service:
-    build:
-      context: ./gRPC
-      dockerfile: Dockerfile
-    ports:
-      - "50051:50051"
-    networks:
-      - my_network
-    depends_on:
-      - iam_backend
-      - media_backend
+   
+  # grpc_service:
+  #   build:
+  #     context: ./gRPC
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "50051:50051"
+  #   networks:
+  #     - my_network
+  #   depends_on:
+  #     - iam_backend
+  #     - media_backend

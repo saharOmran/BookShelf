@@ -1,0 +1,85 @@
+.all-authors{
+    display: flex;
+    width: 1200px;
+    background-color: red ;
+    justify-content: center;
+}
+
+
+.carousel-container {
+    width: 100%;
+    padding: 10px;
+    background-color: #f9f9f9;
+    
+}
+
+.carousel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.carousel-header h2 {
+    margin: 0;
+    font-size: 1.5em;
+}
+
+.show-all-btn {
+    background-color: #555;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9em;
+}
+
+.carousel-content {
+    display: flex;
+    align-items: center;
+}
+
+.prev-btn, .next-btn {
+    background-color: #ddd;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 1.5em;
+    border-radius: 50%;
+    margin: 0 10px;
+}
+
+.carousel-items {
+    display: flex;
+    overflow: hidden;
+    height: 200px;
+    width: calc(100% - 100px);
+}
+
+.carousel-itemm {
+    flex: 0 0 20%;
+    max-width: 20%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+    transition: transform 0.3s ease-in-out;
+}
+
+.carousel-itemm img{
+    width: 130px;
+    height: 160px;
+}
+
+.author-image {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+
+.author-name {
+    font-size: 1em;
+}

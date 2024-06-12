@@ -22,6 +22,7 @@ import AboutUs from './aboutus/aboutus';
 import UserProfile from './user/UserProfile';
 import Login from './signin/Login';
 import VerificationCode from "./signin/VerificationCode";
+import CategoryBooks from "./allbooks/CategoryBooks";
 const App = () => {
 
   const [books, setBooks] = useState(Books);
@@ -134,6 +135,11 @@ const App = () => {
           <Route
             path="/allbooks" books
             element={<AllBooks books={books} />}
+          />
+          
+           <Route
+            path="/CategoryBooks" books
+            element={<CategoryBooks books={books} />}
           />
            
           <Route
