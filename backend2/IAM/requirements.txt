@@ -11,3 +11,4 @@ aiofiles
 tenacity
 pybreaker
 requests
+kafka-python
