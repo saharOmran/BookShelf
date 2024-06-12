@@ -3,9 +3,6 @@ version: '3.8'
 networks:
   my_network:
 
-volumes:
-  mongo_data:
-
 services:
   redis:
     image: redis
@@ -18,8 +15,6 @@ services:
     image: mongo
     ports:
       - "27017:27017"
-    volumes:
-      - mongo_data:/data/db
     networks:
       - my_network
 
