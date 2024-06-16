@@ -548,53 +548,57 @@ async def get_books_by_category(category: str):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-@app.get("/book/get_book/{id}", response_model=Book)
-async def get_book(id: str):
-    try:
-        book = book_service.get_book_by_id(id)
-        if not book:
-            raise HTTPException(status_code=404, detail="Book not found")
-        book["id"] = str(book["_id"])  
-        return Book(**book)
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
 
-@app.get("/book/get_all_books", response_model=List[Book])
-async def get_all_books():
-    try:
-        books = book_service.get_all_books()
-        for book in books:
-            book["id"] = str(book["_id"]) 
-        return [Book(**book) for book in books]
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
-
-@app.get("/book/get_books_by_title/{title}", response_model=List[Book])
-async def get_books_by_title(title: str):
+@app.get("/book/get_books_by_title_with_bookid_inresponse/{title}", response_model=List[dict])
+async def get_books_by_title_with_bookid_inresponse(title: str):
     try:
         books = book_service.get_books_by_title(title)
-        for book in books:
-            book["id"] = str(book["_id"])  
-        return [Book(**book) for book in books]
+        book_ids_and_books = [{"book_id": str(book["_id"])
+                               , "name": book["name"]
+                                , "category": book["category"]
+                                , "writers_name": book["writers_name"]
+                                , "publisher_name": book["publisher_name"]
+                                , "price": book["price"]
+                                , "year_of_publication": book["year_of_publication"]
+                                , "explanation": book["explanation"]
+                                , "image_url": book["image_url"]
+                                , "book_number": book["book_number"]} for book in books]
+        return book_ids_and_books
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-@app.get("/book/get_books_by_author/{author}", response_model=List[Book])
-async def get_books_by_author(author: str):
+@app.get("/book/get_books_by_author_with_bookid_inresponse/{author}", response_model=List[dict])
+async def get_books_by_author_with_bookid_inresponse(author: str):
     try:
         books = book_service.get_books_by_author(author)
-        for book in books:
-            book["id"] = str(book["_id"])  
-        return [Book(**book) for book in books]
+        book_ids_and_books = [{"book_id": str(book["_id"])
+                               , "name": book["name"]
+                                , "category": book["category"]
+                                , "writers_name": book["writers_name"]
+                                , "publisher_name": book["publisher_name"]
+                                , "price": book["price"]
+                                , "year_of_publication": book["year_of_publication"]
+                                , "explanation": book["explanation"]
+                                , "image_url": book["image_url"]
+                                , "book_number": book["book_number"]} for book in books]
+        return book_ids_and_books
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-@app.get("/book/get_books_by_category/{category}", response_model=List[Book])
-async def get_books_by_category(category: str):
+@app.get("/book/get_books_by_category_with_bookid_inresponse/{category}", response_model=List[dict])
+async def get_books_by_category_with_bookid_inresponse(category: str):
     try:
         books = book_service.get_books_by_category(category)
-        for book in books:
-            book["id"] = str(book["_id"])  
-        return [Book(**book) for book in books]
+        book_ids_and_books = [{"book_id": str(book["_id"])
+                               , "name": book["name"]
+                                , "category": book["category"]
+                                , "writers_name": book["writers_name"]
+                                , "publisher_name": book["publisher_name"]
+                                , "price": book["price"]
+                                , "year_of_publication": book["year_of_publication"]
+                                , "explanation": book["explanation"]
+                                , "image_url": book["image_url"]
+                                , "book_number": book["book_number"]} for book in books]
+        return book_ids_and_books
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
