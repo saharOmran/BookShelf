@@ -37,9 +37,9 @@ const CategoryBooks = () => {
         fetchBooks();
     }, [name]);
 
-    const handleBookClick = (book_id) => {
+    const handleBookClick = (id) => {
         console.log(books.title); // Add this line to inspect the clicked book object
-        navigate(`/bookdetails/${book_id}`);
+        navigate(`/bookdetails/${id}`);
     };
 
     if (loading) return <p>Loading...</p>;

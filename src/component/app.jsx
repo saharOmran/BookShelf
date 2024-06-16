@@ -152,7 +152,7 @@ const App = () => {
             element={<AddNewWriter newwriter={writer} setNewWriter={setNewWriter} />}
           />
           <Route
-            path="allbooks/bookdetails/:book_id"
+            path="/bookdetails/:book_id"
             element={<BookDetails onSave={onCart} onWishlist={onWishlist} />}
           />
            

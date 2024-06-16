@@ -4,7 +4,7 @@ import axios from 'axios';
 import './bookdetails.css';
 
 const BookDetails = ({ onSave, onWishlist }) => {
-    const { book_id } = useParams();
+    const { id } = useParams();
     const navigate = useNavigate();
     const [book, setBook] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -13,7 +13,7 @@ const BookDetails = ({ onSave, onWishlist }) => {
     useEffect(() => {
         const fetchBookDetails = async () => {
             try {
-                const response = await axios.get(`http://127.0.0.1:80/books/get_books_with_book_ids/${book_id}`);
+                const response = await axios.get(`http://127.0.0.1:80/book/get_book/${id}`);
                 setBook(response.data);
                 setLoading(false);
             } catch (error) {
@@ -23,7 +23,7 @@ const BookDetails = ({ onSave, onWishlist }) => {
         };
 
         fetchBookDetails();
-    }, [book_id]);
+    }, [id]);
 
     if (loading) {
         return <div>Loading...</div>;
