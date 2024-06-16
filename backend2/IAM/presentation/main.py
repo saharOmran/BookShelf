@@ -49,6 +49,7 @@ import requests
 import pybreaker
 from tenacity import retry, stop_after_attempt, wait_fixed
 
+
 # Configure logger
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
@@ -286,6 +287,24 @@ async def edit_book(
         return {"message": "Book updated successfully"}
     except Exception as e:
         logging.error(f"Error editing book: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/books/get_books_with_book_ids", response_model=List[dict])
+async def get_books_with_book_ids():
+    try:
+        books = book_service.get_all_books()
+        book_ids_and_titles = [{"book_id": str(book["_id"]), "title": book["name"]
+                                , "title": book["name"]
+                                , "category": book["category"]
+                                , "writers_name": book["writers_name"]
+                                , "publisher_name": book["publisher_name"]
+                                , "price": book["price"]
+                                , "year_of_publication": book["year_of_publication"]
+                                , "explanation": book["explanation"]
+                                , "image_url": book["image_url"]
+                                , "book_number": book["book_number"]} for book in books]
+        return book_ids_and_titles
+    except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
 

@@ -137,10 +137,7 @@ const App = () => {
             element={<AllBooks books={books} />}
           />
           
-           <Route
-            path="/CategoryBooks" books
-            element={<CategoryBooks books={books} />}
-          />
+          <Route path="/CategoryBooks/:name" element={<CategoryBooks />} />
            
           <Route
             path="/admin/addnewitem"
@@ -155,14 +152,16 @@ const App = () => {
             element={<AddNewWriter newwriter={writer} setNewWriter={setNewWriter} />}
           />
           <Route
-            path="/bookdetails/:id"
-            element={<BookDetails books={books} onSave={onCart} onWishlist={onWishlist} />}
+            path="allbooks/bookdetails/:book_id"
+            element={<BookDetails onSave={onCart} onWishlist={onWishlist} />}
           />
+           
 
-          <Route
+
+          {/* <Route
             path="allbooks/bookdetails/:id"
-            element={<BookDetails books={books} onSave={onCart} onWishlist={onWishlist} />}
-          />
+            element={<BookDetails books={bookonSave={onCart} onWishlist={onWishlist} />}
+          /> */}
           <Route
             path="wishlist/bookdetails/:id"
             element={<BookDetails books={books} onSave={onCart} onWishlist={onWishlist} />}
