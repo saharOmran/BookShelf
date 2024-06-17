@@ -4,21 +4,24 @@
     background-color: white;
     max-width: 900px;
     border-radius: 7px;
-    padding: 10px;
+    padding: 20px;
     box-shadow: 0px 14px 32px 0px rgba(0, 0, 0, 0.15);
 }
-.detail{
+
+.detail {
     font-size: 17px;
-    display:inline-flex;
-    color:teal;
-  
+    display: inline-flex;
+    color: teal;
 }
-.text{
+
+.text {
     margin-bottom: 10px;
 }
 
-.card-img-top{
-    width: 80px;
+.card-img-top {
+    width: 230px;
+    height: 380px;
+    object-fit: cover;
 }
 
 .author-books {
@@ -50,10 +53,6 @@
         display: block; /* Show the button when page width is more than 900px */
     }
 }
-
-/* .detail-about{
-    width: 100px;
-} */
 
 @media (max-width: 900px) {
     .bookdetails {

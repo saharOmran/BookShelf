@@ -13,7 +13,7 @@ const CategoryBooks = () => {
         const fetchBooks = async () => {
             try {
                 const encodedCategory = encodeURIComponent(name);
-                const response = await fetch(`http://127.0.0.1:80/book/get_books_by_category/${encodedCategory}`, {
+                const response = await fetch(`http://127.0.0.1:80/book/get_books_by_category_with_bookid_inresponse/${encodedCategory}`, {
                     method: 'GET',
                     headers: {
                         'Accept': 'application/json'
@@ -37,9 +37,9 @@ const CategoryBooks = () => {
         fetchBooks();
     }, [name]);
 
-    const handleBookClick = (id) => {
-        console.log(books.title); // Add this line to inspect the clicked book object
-        navigate(`/bookdetails/${id}`);
+    const handleBookClick = (book_id) => {
+        console.log("hello"); // Add this line to inspect the clicked book object
+        navigate(`/bookdetails/${book_id}`);
     };
 
     if (loading) return <p>Loading...</p>;

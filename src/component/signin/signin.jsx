@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./signin.css"
 import { useNavigate } from "react-router"
 import { ToastContainer, toast } from "react-toastify";
- 
+import { useEffect } from "react";
  
 const SignIn = ({ setUser }) => {
   const [closed, setClosed] = useState(false);
@@ -11,6 +11,18 @@ const SignIn = ({ setUser }) => {
     mobile_number: "",
     password: ""
   });
+  const isAuthenticated = () => {
+    // Replace this with actual logic to check if the user is authenticated
+    // For example, checking localStorage for a valid token
+    return localStorage.getItem('authToken')? true : false;
+  };
+
+  useEffect(() => {
+    // Redirect to login if not authenticated
+    if (!isAuthenticated()) {
+      navigate('/login', { replace: true });
+    }
+  }, []);
 
   const navigate = useNavigate();
 
@@ -41,7 +53,7 @@ const SignIn = ({ setUser }) => {
      }
      else if(res.status === 200){
       setUser(data.mobile_number);
-      if (data.mobile_number === '09117783268'){
+      if (data.mobile_number === '0911778326688'){
       navigate("/admin" , { replace: true })
       }
       else{

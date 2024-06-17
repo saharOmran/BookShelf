@@ -4,7 +4,7 @@ import axios from 'axios';
 import './bookdetails.css';
 
 const BookDetails = ({ onSave, onWishlist }) => {
-    const { id } = useParams();
+    const { book_id } = useParams();
     const navigate = useNavigate();
     const [book, setBook] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -13,7 +13,7 @@ const BookDetails = ({ onSave, onWishlist }) => {
     useEffect(() => {
         const fetchBookDetails = async () => {
             try {
-                const response = await axios.get(`http://127.0.0.1:80/book/get_book/${id}`);
+                const response = await axios.get(`http://127.0.0.1:80/book/get_book/${book_id}`);
                 setBook(response.data);
                 setLoading(false);
             } catch (error) {
@@ -23,7 +23,7 @@ const BookDetails = ({ onSave, onWishlist }) => {
         };
 
         fetchBookDetails();
-    }, [id]);
+    }, [book_id]);
 
     if (loading) {
         return <div>Loading...</div>;
@@ -48,6 +48,9 @@ const BookDetails = ({ onSave, onWishlist }) => {
                     </div>
                     <div className="col-md-8 p-2">
                         <h1 className="display-5 fw-bolder">{book.name}</h1>
+                        <h4 className="text-muted">{`نویسنده:${book.writers_name}`}</h4>
+                        <h5 className="text-muted">{`انتشارات:${book.publisher_name}`}</h5>
+                        <h6 className="text-muted">{`Year of Publication: ${book.year_of_publication}`}</h6>
                         <div className="fs-5 mb-5">
                             <span className="text">{`قیمت : ${book.price} تومان`}</span>
                         </div>
