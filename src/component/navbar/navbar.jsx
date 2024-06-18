@@ -11,6 +11,11 @@ const Navbar = ({ user, setUser }) => {
   const [wishcount, setWishCount] = useState()
 
   const { sticky, stickyRef } = useSticky();
+  const [showMenu, setShowMenu] = useState(false);
+
+    const handleLogout = () => {
+        localStorage.removeItem("user");
+        setUser(null);}
 
   useEffect(() => {
     const cartBooks = Books.filter((element) => element.isInCart === true);
@@ -84,13 +89,26 @@ const Navbar = ({ user, setUser }) => {
               <span className="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">{cartnum.length}</span>
             </NavLink>
             <div className="d-inline-flex">
-              {user ?
-                <user user={user} setUser={setUser} />
-                :
-                <NavLink className="nav-icon position-relative text-decoration-none mx-5" to={'./signin'}>
+                    {user ? (
+                  <div className="dropdown">
+                    <button onClick={() => setShowMenu(!showMenu)} className="btn btn-primary">
+                      Welcome, {user}!
+                    </button>
+                    {showMenu && (
+                      <div className="dropdown-menu">
+                        <button className="dropdown-item" onClick={() => setShowMenu(false)}>Sign Up</button>
+                        <button className="dropdown-item" onClick={handleLogout}>Log Out</button>
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  
+                  <NavLink className="nav-icon position-relative text-decoration-none mx-5" to={'./signin'}>
                   <i className="fa fa-fw fa-user text-dark mr-3" />
                 </NavLink>
-              }
+                )}
+                
+              
             </div>
           </div>
         </div>

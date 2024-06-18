@@ -38,7 +38,7 @@ const App = () => {
   //   return () => clearTimeout(timeout)
   // }, []);
 
-
+   
   const onWishlist = (book) => {
     //edit
     book.wishlist = true;
@@ -106,7 +106,7 @@ const App = () => {
         <Routes>
           <Route
             path="/"
-            element={<HomePage onSave={onCart} books={books} />}
+            element={<HomePage onSave={onCart} books={books}   />}
           />
           <Route path="/signin" element={<SignIn setUser={setUser} />} />
           <Route
@@ -127,7 +127,7 @@ const App = () => {
 
           <Route 
             path="/UserProfile" 
-            element={<UserProfile />} />
+            element={<UserProfile setUser={setUser}/>} />
           <Route
             path="/admin/edit"
             element={<Edit books={books} onDelete={handleDelete} />}

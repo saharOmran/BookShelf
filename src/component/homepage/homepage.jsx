@@ -13,9 +13,12 @@ import AuthorsCarousel from '../panelmid/AuthorsCarousel';
 
 
 const HomePage = ({books }) => {
+     
     return(
         <>
+         
         <Header />
+
         <NewBooks books={books} />
         <Gifs></Gifs>  
         <Porforosh books={books}  />
