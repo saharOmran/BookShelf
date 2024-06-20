@@ -1,91 +1,91 @@
 import React, { useRef, useEffect, useState } from "react";
 import "../header/header.css";
-import images from '../../images';
 import { Link } from "react-router-dom";
-import './porforosh.css'
-import { motion } from "framer-motion"
-import { color } from "@chakra-ui/react";
+import './porforosh.css';
+import { motion } from "framer-motion";
 
+const Politz = () => {
+    const [books, setBooks] = useState([]);
+    const [width, setWidth] = useState(0);
+    const [error, setError] = useState(null);
+    const carouselRef = useRef();
 
-const Politz = ({ books }) => {
-
- 
-  
-    const [width, setWidth] = useState(0)
-  
-    const carouselRef = useRef()
-  
-  
-    useEffect(() => {
-      setWidth(carouselRef.current.scrollWidth - carouselRef.current.offsetWidth);
-    }, [])
-  
-    
-    const createStars = () => {
-      let stars = [];
-      let randomNumber = Math.floor(Math.random() * 4 + 1);
-      for (let i = 0; i < randomNumber; i++) {
-        stars.push(
-          <li className="list-inline-item">
-            <i className="fa fa-star"></i>
-          </li>
-        );
+    // Function to fetch books data by category
+    const fetchBooksByCategory = async (category) => {
+      try {
+          const response = await fetch(`http://127.0.0.1:80/book/get_books_by_category/${encodeURIComponent(category)}`);
+          if (!response.ok) {
+              throw new Error('Not Found');
+          }
+          const booksData = await response.json();
+          if (Array.isArray(booksData)) {
+              setBooks(booksData);
+              setError(null);
+          } else {
+              setBooks([]);
+              throw new Error('Fetched data is not an array');
+          }
+      } catch (error) {
+          console.error(`Error fetching books: ${error.message}`);
+          setBooks([]);
+          setError(`Error fetching books: ${error.message}`);
       }
-      return stars;
-    };
-  
-  
-  
-  return (
-    <div>
-      <section className="Newbooks">
-        <div className="container" id="novels">
-          <div className="row">
-            <div className="col-md-12 mx-auto">
-              <h2>
-                  کتاب های برنده ی جایزه ی <b>  پولیتزر داستان</b>
-              </h2>
-              <motion.div ref={carouselRef} whileTap={{ cursor: "grabbing" }} className="carousel">
-                <motion.div drag="x" dragConstraints={{ right: 0, left: -width }} className="inner-carousel">
-                  {books.map((book) => (
-                    <motion.div className="item" key={book.id}>
-                      <div className="imgBox" >
-                        <img src={images[(book.id - 1)]} alt="bookimg" />
-                        <div className="content">
-                          <div className="name-price">
-                            <Link to={`/bookdetails/${book.id}`} style={{ textDecoration: 'none' }}>
-                              <h4>{book.name}</h4>
-                            </Link>
-                            <hr></hr>
-                            <div className="price-icon">
-                            <p className="item-price">
-                              <span>{book.price}هزارتومان</span>
-                               
-                            </p>
-                             
-                              <i className="fa fa-fw fa-cart-arrow-down text-dark" />
-                            </div> 
-                          </div>
-                          
-                        </div>
+  };
+
+    // Fetch books data when the component mounts
+    useEffect(() => {
+        fetchBooksByCategory('فلسفی');
+    }, []);
+
+    useEffect(() => {
+        if (carouselRef.current) {
+            setWidth(carouselRef.current.scrollWidth - carouselRef.current.offsetWidth);
+        }
+    }, [books]);
+
+    return (
+      <div>
+          <section className="Newbooks">
+              <div className="container" id="novels">
+                  <div className="row">
+                      <div className="col-md-12 mx-auto">
+                          <h2>
+                              کتاب های<b> برنده جایزه پولیتزر داستان </b>
+                          </h2>
+                          {error ? (
+                              <div className="error-message">{error}</div>
+                          ) : (
+                              <motion.div ref={carouselRef} whileTap={{ cursor: "grabbing" }} className="carousel">
+                                  <motion.div drag="x" dragConstraints={{ right: 0, left: -width }} className="inner-carousel">
+                                      {books.map((book) => (
+                                          <motion.div className="item" key={book.book_number}>
+                                              <div className="imgBox">
+                                                  <img src={book.image_url} alt="bookimg" />
+                                                  <div className="content">
+                                                      <div className="name-price">
+                                                          <Link to={`/bookdetails/${book.book_number}`} style={{ textDecoration: 'none' }}>
+                                                              <h4>{book.name}</h4>
+                                                          </Link>
+                                                          <hr />
+                                                          <div className="price-icon">
+                                                              <p className="item-price">
+                                                                  <span>{book.price} هزارتومان</span>
+                                                              </p>
+                                                              <i className="fa fa-fw fa-cart-arrow-down text-dark" />
+                                                          </div>
+                                                      </div>
+                                                  </div>
+                                              </div>
+                                          </motion.div>
+                                      ))}
+                                  </motion.div>
+                              </motion.div>
+                          )}
                       </div>
-                    </motion.div>
-                  ))}
-  
-                </motion.div>
-              </motion.div>
-  
-            </div>
-          </div>
-        </div>
-      </section>
-    </div>
+                  </div>
+              </div>
+          </section>
+      </div>
   );
-  }
- 
-  
-
-
-
-
+}
 export default Politz;

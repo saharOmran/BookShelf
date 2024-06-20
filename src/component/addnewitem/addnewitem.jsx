@@ -1,12 +1,9 @@
 import React, { useState } from 'react';
 import "./addnewitem.css";
-import Books from '../db';
 import Alert from '../alert/alert';
 import axios from 'axios';
-import images from '../../images';
 
 const AddNewItem = () => {
-
     const [newBook, setNewBook] = useState({
         name: "",
         category: "",
@@ -35,7 +32,7 @@ const AddNewItem = () => {
             image: event.target.files[0],
         });
     };
- 
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         const formData = new FormData();
@@ -50,150 +47,127 @@ const AddNewItem = () => {
         formData.append('book_number', newBook.id);
 
         try {
-            
-            const response = await axios.post("http://127.0.0.1:80/books/", formData, {
+            const response = await axios.post("http://127.0.0.1:80/books", formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
-                    'accept': 'application/json'
                 }
             });
-            console.log(response.data);
-            setResponseBody(response.data); // Update response body state variable
+            setResponseBody(response.data);
             setAlert(true);
-             // Response containing book_id and image_url
         } catch (error) {
             console.error('Error adding book:', error);
         }
     };
-    
 
     return (
         <React.Fragment>
-            {alert ?
-                <Alert message={responseBody.data} /> // Render response body
-                : null}
+            {alert && <Alert message={responseBody} />}
             <div className="title my-3 text-center">
+                <h2>Add New Book</h2>
             </div>
             <form className="editbooks" onSubmit={handleSubmit}>
                 <div className="mb-3 itemdata">
-                    <label htmlFor="productName" className="form-label">
-                        اسم کتاب
-                    </label>
+                    <label htmlFor="productName" className="form-label">اسم کتاب</label>
                     <input
                         name="name"
                         type="text"
                         className="form-control"
                         value={newBook.name}
                         onChange={handleChange}
-                        aria-describedby="emailHelp"
+                        required
                     />
                 </div>
                 <div className="mb-3 itemdata">
-                    <label htmlFor="productCategory" className="form-label">
-                        اسم کتگوری
-                    </label>
+                    <label htmlFor="productCategory" className="form-label">اسم کتگوری</label>
                     <input
                         name="category"
                         type="text"
                         className="form-control"
                         value={newBook.category}
                         onChange={handleChange}
-                        aria-describedby="emailHelp"
+                        required
                     />
                 </div>
                 <div className="mb-3 itemdata">
-                    <label htmlFor="productWriter" className="form-label">
-                        اسم نویسنده
-                    </label>
+                    <label htmlFor="productWriter" className="form-label">اسم نویسنده</label>
                     <input
                         name="writer"
                         type="text"
                         className="form-control"
                         value={newBook.writer}
                         onChange={handleChange}
-                        aria-describedby="emailHelp"
+                        required
                     />
                 </div>
                 <div className="mb-3 itemdata">
-                    <label htmlFor="productPublisher" className="form-label">
-                        اسم ناشر
-                    </label>
+                    <label htmlFor="productPublisher" className="form-label">اسم ناشر</label>
                     <input
                         name="publisher"
                         type="text"
                         className="form-control"
                         value={newBook.publisher}
                         onChange={handleChange}
-                        aria-describedby="emailHelp"
+                        required
                     />
                 </div>
                 <div className="mb-3 itemdata">
-                    <label htmlFor="productPrice" className="form-label">
-                        قیمت محصول
-                    </label>
+                    <label htmlFor="productPrice" className="form-label">قیمت محصول</label>
                     <input
                         name="price"
+                        type="number"
+                        className="form-control"
                         value={newBook.price}
                         onChange={handleChange}
-                        type="number"
-                        className="form-control"
+                        required
                     />
                 </div>
                 <div className="mb-3 itemdata">
-                    <label htmlFor="productYear" className="form-label">
-                        سال انتشار
-                    </label>
+                    <label htmlFor="productYear" className="form-label">سال انتشار</label>
                     <input
                         name="year"
-                        value={newBook.year}
-                        onChange={handleChange}
                         type="number"
                         className="form-control"
+                        value={newBook.year}
+                        onChange={handleChange}
+                        required
                     />
                 </div>
                 <div className="mb-3 itemdata">
-                    <label htmlFor="productDescription" className="form-label">
-                        توضیحات  
-                    </label>
+                    <label htmlFor="productDescription" className="form-label">توضیحات</label>
                     <input
                         name="about"
                         type="text"
                         className="form-control"
                         value={newBook.about}
                         onChange={handleChange}
-                        aria-describedby="emailHelp"
+                        required
                     />
                 </div>
                 <div className="mb-3 itemdata">
-                    <label htmlFor="productImage" className="form-label-1">
-                        تصویر کتاب
-                    </label>
+                    <label htmlFor="productImage" className="form-label-1">تصویر کتاب</label>
                     <input
                         name="image"
                         type="file"
                         onChange={handleFileChange}
                         className="form-control small-input"
+                        required
                     />
                 </div>
                 <div className="mb-3 itemdata">
-                    <label htmlFor="productPrice" className="form-label">
-                        شماره کتاب
-                    </label>
+                    <label htmlFor="productPrice" className="form-label">شماره کتاب</label>
                     <input
                         name="id"
-                        value={newBook.id}
-                        onChange={handleChange}
                         type="number"
                         className="form-control"
+                        value={newBook.id}
+                        onChange={handleChange}
+                        required
                     />
                 </div>
                 <div className="itemdata d-inline-flex">
-                    <button type="submit" className="btn btn-danger px-5 mx-2 rounded-pill " >
-                        افزودن
-                    </button>
+                    <button type="submit" className="btn btn-danger px-5 mx-2 rounded-pill">افزودن</button>
                 </div>
             </form>
-             
         </React.Fragment>
     );
 }

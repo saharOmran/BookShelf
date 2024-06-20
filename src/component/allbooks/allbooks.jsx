@@ -187,7 +187,7 @@ const categories = [
     { name: 'روانشناسی', image: './ravanshenasi.jpg' },
     { name: 'فلسفی', image: './falsafi.jpg' },
     { name: 'دینی و مذهبی', image: './dini.jpg' },
-    { name: 'آموزشی', image: './amozeshi.jpg' },
+    { name: 'اموزشی', image: './amozeshi.jpg' },
     { name: 'تاریخی', image: './tarikhi.jpg' },
     { name: 'سیاسی', image: './siasi.jpg' },
     { name: 'علمی', image: './elmi.jpg' },

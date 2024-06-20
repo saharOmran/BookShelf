@@ -1,36 +1,186 @@
 import React, { useState, useEffect } from "react";
 import "./shoppingcart.css";
-import images from './../../images';
-import Books from "../db";
 
-const ShoppingCart = ({ onIncrement, onDecrement, onDelete }) => {
+const ShoppingCart = ({ onDecrement }) => {
+  const [cartBooks, setCartBooks] = useState([]);
+  const [total, setTotal] = useState(0);
 
-  const [cartBook, setCartBook] = useState([])
-  const [total, setTotal] = useState()
-  
   useEffect(() => {
-    const cartBooks = Books.filter((element) => element.isInCart === true);
-    setCartBook(cartBooks)
-  }, [cartBook])
-
+    fetchCartItems(); // Fetch cart items on component mount
+  }, []); // Empty dependency array ensures this effect runs only once
 
   useEffect(() => {
     let subtotal = 0;
-    for (let i = 0; i < cartBook.length; i++) {
-       subtotal += cartBook[i].price * cartBook[i].count;
+    for (let i = 0; i < cartBooks.length; i++) {
+      subtotal += cartBooks[i].price * cartBooks[i].count;
     }
-    setTotal(subtotal)
-  }, [cartBook])
+    setTotal(subtotal);
+  }, [cartBooks]); // Update total whenever cartBooks changes
 
+  const fetchCartItems = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        throw new Error('No token found');
+      }
+
+      const response = await fetch('http://127.0.0.1:80/cart', {
+        headers: {
+          'accept': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log('Fetched cart data:', data);
+
+      if (data.cart_items) {
+        const bookDetailsPromises = data.cart_items.map(async item => {
+          const bookResponse = await fetch(`http://127.0.0.1:80/book/get_book/${item.book_id}`);
+          if (!bookResponse.ok) {
+            throw new Error(`Failed to fetch book details for book_id: ${item.book_id}`);
+          }
+          const bookData = await bookResponse.json();
+          return { ...bookData, count: item.quantity, book_id: item.book_id };
+        });
+
+        const detailedCartItems = await Promise.all(bookDetailsPromises);
+        setCartBooks(detailedCartItems);
+      } else {
+        console.error('cart_items not found in the response');
+      }
+    } catch (error) {
+      console.error('Error fetching cart items:', error);
+    }
+  };
+
+  const handleDelete = async (book) => {
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        throw new Error('No token found');
+      }
+
+      const response = await fetch(`http://127.0.0.1:80/cart/remove/${book.book_id}`, {
+        method: 'DELETE',
+        headers: {
+          'accept': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
+      console.log(result.message);
+
+      const updatedCartBooks = cartBooks.filter(item => item.book_id !== book.book_id);
+      setCartBooks(updatedCartBooks);
+    } catch (error) {
+      console.error('Error removing item from cart:', error);
+    }
+  };
+
+  const handleIncrement = async (book) => {
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        throw new Error('No token found');
+      }
+
+      console.log(`Incrementing quantity for book_id: ${book.book_id}`);
+
+      const response = await fetch(`http://127.0.0.1:80/cart/increase/${book.book_id}`, {
+        method: 'PUT',
+        headers: {
+          'accept': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
+      console.log(result.message);
+
+      const updatedCartBooks = cartBooks.map(item => {
+        if (item.book_id === book.book_id) {
+          return { ...item, count: item.count + 1 };
+        }
+        return item;
+      });
+
+      setCartBooks(updatedCartBooks);
+    } catch (error) {
+      console.error('Error increasing item quantity:', error);
+    }
+  };
+
+  const handleDecrement = async (book) => {
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        throw new Error('No token found');
+      }
+
+      console.log(`Decrementing quantity for book_id: ${book.book_id}`);
+
+      if (book.count === 1) {
+        return;
+      }
+
+      const response = await fetch(`http://127.0.0.1:80/cart/decrease/${book.book_id}`, {
+        method: 'PUT',
+        headers: {
+          'accept': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
+      console.log(result.message);
+
+      const updatedCartBooks = cartBooks.map(item => {
+        if (item.book_id === book.book_id) {
+          return { ...item, count: item.count - 1 };
+        }
+        return item;
+      });
+
+      setCartBooks(updatedCartBooks);
+    } catch (error) {
+      console.error('Error decreasing item quantity:', error);
+    }
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    setCartBooks([]); // Clear cart when logging out
+  };
+
+  const handleLogin = () => {
+    fetchCartItems(); // Fetch cart items for the new user after login
+  };
 
   return (
     <>
-      <div className="container mt-5 p-3  cart">
+      <div className="container mt-5 p-3 cart">
         <div className="row no-gutters">
           <div className="col-md-8">
             <div className="product-details mb-3">
               <h2>سبد<b>خرید</b></h2>
-              {/* <h2>{`Cart(${cartBook.length})`}</h2> */}
               <div className="container">
                 <div className="row">
                   <div className="col-md-12 col-sm-4">
@@ -45,10 +195,10 @@ const ShoppingCart = ({ onIncrement, onDecrement, onDelete }) => {
                         </tr>
                       </thead>
                       <tbody>
-                        {cartBook.map((book) => (
-                          <tr>
-                            <td class="align-middle d-flex bookImage">
-                              <img className="rounded" src={images[book.id-1]} width={40} alt="" />
+                        {cartBooks.map((book) => (
+                          <tr key={book.book_id}>
+                            <td className="align-middle d-flex bookImage">
+                              <img className="rounded" src={book.image_url} width={40} alt="" />
                               <div className="p-2">
                                 <span className="d-block bookname">
                                   {book.name}
@@ -57,11 +207,12 @@ const ShoppingCart = ({ onIncrement, onDecrement, onDelete }) => {
                             </td>
                             <td className="align-middle">{book.price}</td>
                             <td className="align-middle ">
-                              <div className="d-flex d-flex justify-content-center">
+                              <div className="d-flex justify-content-center">
                                 <button
                                   className="btn-sm bg-muted"
-                                  onClick={() => onDecrement(book)}
+                                  onClick={() => handleDecrement(book)}
                                   type="button"
+                                  disabled={book.count === 1}
                                 >
                                   <i className="fas fa-minus"></i>
                                 </button>
@@ -70,7 +221,7 @@ const ShoppingCart = ({ onIncrement, onDecrement, onDelete }) => {
                                 </div>
                                 <button
                                   className="btn-sm bg-muted"
-                                  onClick={() => onIncrement(book)}
+                                  onClick={() => handleIncrement(book)}
                                   type="button"
                                 >
                                   <i className="fas fa-plus"></i>
@@ -83,7 +234,7 @@ const ShoppingCart = ({ onIncrement, onDecrement, onDelete }) => {
                             <td className="align-middle">
                               <i
                                 className="fas fa-trash mx-4 delete"
-                                onClick={() => onDelete(book)}
+                                onClick={() => handleDelete(book)}
                               />
                             </td>
                           </tr>
@@ -95,7 +246,7 @@ const ShoppingCart = ({ onIncrement, onDecrement, onDelete }) => {
               </div>
             </div>
           </div>
-          <div className="card  col-md-3  mx-auto">
+          <div className="card col-md-3 mx-auto">
             <div className="card-header">
               <h6 className="card-text">پیش فاکتور</h6>
             </div>
@@ -114,7 +265,7 @@ const ShoppingCart = ({ onIncrement, onDecrement, onDelete }) => {
                 <h6>قیمت کل</h6>
                 <h6>{total + 20000}</h6>
               </div>
-              <button className="btn btn-block btn-warning">پرداخت</button>
+              <button className="btn btn-block btn-warning" onClick={handleLogout}>خروج</button>
             </div>
           </div>
         </div>
