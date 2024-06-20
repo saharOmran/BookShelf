@@ -1,87 +1,77 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useState } from "react";
 import "../header/header.css";
 import images from '../../images';
 import { Link } from "react-router-dom";
-import './newbooks.css'
-import { motion } from "framer-motion"
-import { color } from "@chakra-ui/react";
-
+import './newbooks.css';
+import { motion } from "framer-motion";
 
 const NewBooks = ({ books }) => {
+    const [currentSetIndex, setCurrentSetIndex] = useState(0);
 
-  const [width, setWidth] = useState(0)
+    const handleNextClick = () => {
+        if (currentSetIndex < books.length - 9) {
+            setCurrentSetIndex(currentSetIndex + 1);
+        }
+    };
 
-  const carouselRef = useRef()
+    const handlePrevClick = () => {
+        if (currentSetIndex > 0) {
+            setCurrentSetIndex(currentSetIndex - 1);
+        }
+    };
 
-
-  useEffect(() => {
-    setWidth(carouselRef.current.scrollWidth - carouselRef.current.offsetWidth);
-  }, [])
-
-  
-  const createStars = () => {
-    let stars = [];
-    let randomNumber = Math.floor(Math.random() * 4 + 1);
-    for (let i = 0; i < randomNumber; i++) {
-      stars.push(
-        <li className="list-inline-item">
-          <i className="fa fa-star"></i>
-        </li>
-      );
-    }
-    return stars;
-  };
-
-
-
-return (
-  <div>
-    <section className="Newbooks">
-      <div className="container" id="novels">
-        <div className="row">
-          <div className="col-md-12 mx-auto">
-            <h2>
-              جدید ترین  <b>کتاب ها</b>
-            </h2>
-            <motion.div ref={carouselRef} whileTap={{ cursor: "grabbing" }} className="carousel">
-              <motion.div drag="x" dragConstraints={{ right: 0, left: -width }} className="inner-carousel">
-                {books.map((book) => (
-                  <motion.div className="item" key={book.id}>
-                    <div className="imgBox" >
-                      <img src={images[(book.id - 1)]} alt="bookimg" />
-                      <div className="content">
-                        <div className="name-price">
-                          <Link to={`/bookdetails/${book.id}`} style={{ textDecoration: 'none' }}>
-                            <h4>{book.name}</h4>
-                          </Link>
-                          <hr></hr>
-                          <div className="price-icon">
-                          <p className="item-price">
-                            <span>{book.price}هزارتومان</span>
-                             
-                          </p>
-                           
-                            <i className="fa fa-fw fa-cart-arrow-down text-dark" />
-                          </div> 
+    return (
+        <div>
+            <section className="Newbooks">
+                <div className="container" id="novels">
+                    <div className="row">
+                        <div className="col-md-12 mx-auto">
+                            <h2>
+                                جدید ترین <b>کتاب ها</b>
+                            </h2>
+                            
+                            <motion.div className="carousel-container" style={{ width: '100%' }}>
+                                <motion.div className="carousel">
+                                    <motion.div className="inner-carousel">
+                                        {books.slice(currentSetIndex, currentSetIndex + 9).map((book, index) => (
+                                            <motion.div className="item" key={book.id}>
+                                                <div className="imgBox">
+                                                    <img src={images[book.id - 1]} alt="bookimg" />
+                                                    <div className="content">
+                                                        <div className="name-price">
+                                                            <Link to={`/bookdetails/${book.id}`} style={{ textDecoration: 'none' }}>
+                                                                <h4>{book.name}</h4>
+                                                            </Link>
+                                                            <hr></hr>
+                                                            <div className="price-icon">
+                                                                <p className="item-price">
+                                                                    <span>{book.price} هزارتومان</span>
+                                                                </p>
+                                                                <i className="fa fa-fw fa-cart-arrow-down text-dark" />
+                                                            </div>
+                                                            
+                                                        </div>
+                                                        
+                                                    </div>
+                                                    
+                                                </div>
+                                                
+                                            </motion.div>
+                                        ))}
+                                        
+                                    </motion.div>
+                                    <div className="button-container">
+                                      <button className="prev-button" onClick={handlePrevClick}>{"<"}</button>
+                                      <button className="next-button" onClick={handleNextClick}>{">"}</button>
+                                    </div>
+                                </motion.div>
+                            </motion.div>
                         </div>
-                        
-                      </div>
                     </div>
-                  </motion.div>
-                ))}
-
-              </motion.div>
-            </motion.div>
-
-          </div>
+                </div>
+            </section>
         </div>
-      </div>
-    </section>
-  </div>
-);
-}
-
-
-
+    );
+};
 
 export default NewBooks;

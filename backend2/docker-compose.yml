@@ -100,10 +100,6 @@ services:
     networks:
       - my_network
 
-<<<<<<< HEAD
-   
-=======
->>>>>>> 81972f329b84d8eaaa4297b654349c88519f1138
   # grpc_service:
   #   build:
   #     context: ./gRPC
@@ -114,8 +110,7 @@ services:
   #     - my_network
   #   depends_on:
   #     - iam_backend
-<<<<<<< HEAD
   #     - media_backend
-=======
+ 
   #     - media_backend
->>>>>>> 81972f329b84d8eaaa4297b654349c88519f1138
+ 

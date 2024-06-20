@@ -7,6 +7,7 @@ import { ToastContainer, toast } from "react-toastify";
 const SignIn = ({ setUser }) => {
   const [closed, setClosed] = useState(false);
   const [error, setError] = useState(null);
+  const [logined, setlogined] = useState(false);
   const [data, setData] = useState({
     mobile_number: "",
     password: ""
@@ -36,6 +37,7 @@ const SignIn = ({ setUser }) => {
 
      if (res.status === 200 && data.mobile_number === '0911117783268') {
       setUser(data.mobile_number);
+      setlogined(true);
       navigate("/admin", { replace: true });
      
      }

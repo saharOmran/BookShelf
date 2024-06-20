@@ -1,68 +1,67 @@
-/* carousel */
-
 .Newbooks {
     background-color: rgba(142, 144, 144 , 0.1);
 }
-
+ 
 .carousel {
-    margin-top: 20px;
+    margin-top: 50px;
     overflow: hidden;
     cursor: grab;
     margin-bottom: 50px;
     z-index: 1050;
     background-color: white !important;
-    /* padding: 10px 30px 20px 30px; */
-    
-    
+    padding: 20px 30px 20px 30px;
 }
-
+.carousel-container{
+    background-color: #fff;
+}
 .inner-carousel {
     display: flex;
     border-radius: 15px;
-     
+    transition: transform 0.5s ease;
+    justify-content: center; /* Center the item */
 }
 
-.item {
-    width: 150px !important;
-    height: 250px !important;
-    background-color: white !important;
+.inner-carousel .item {
+    width: 170px !important;
+    height: 320px !important;
+    background-color: whitesmoke;
     margin: 3px !important;
     padding: 1px;
-    border: 0.5px solid  rgb(142, 144, 300 );;
-    border-radius: 10px;
-
+    border: 0.5px solid #999;
+    flex: 0 0 auto;
+    transition: transform 0.5s ease;
 }
 
 .fa-shopping-cart{
     background-color: white;
 }
-
- 
-
-.item img {
-    background-color: white;
-    width: 130px  ;
-    height: 184px !important;
+.carousel-container {
+    position: relative;
+    overflow: hidden;
+  }
+.inner-carousel .item img {
+    width: 160px;
+    height: 195px !important;
     border-radius: 5px;
     pointer-events: none;
-    box-shadow: 0.9px 1px 1px ;
-    margin:  10px !important;
+    box-shadow: 0.9px 1px 1px;
+    margin: 2px 5px !important;
     box-shadow: 4px 4px 2px #ccc;
     -webkit-box-shadow: 4px 4px 2px #ccc;
     -moz-box-shadow: 4px 4px 2px #ccc;
 }
 
-.item .content {
+.inner-carousel .item .content {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
     height: 20px;
+
 }
 
-.item .content h4 {
+.inner-carousel .item .content h4 {
     font-weight: 550;
-    font-size: 11px;
+    font-size: 15px;
     font-family: sans-serif;
     text-align: start;
     width: 100%;
@@ -72,39 +71,68 @@
     color: rgb(38, 2, 82);
     transition: 0.1s color ease-in;
 }
+.pagination-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
 
+.prev-button, .next-button {
+    padding: 5px 10px;
+     font-size: 35px;
+     background-color: #fff;
+    color: darkgray;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.wide-item {
+    width: 100%;
+    /* Add any other styles needed for the first book */
+  }
+  
+  .left-item {
+    width: 50%;
+    /* Adjust the width as needed for the subsequent books */
+  }
+  .button-container{
+    display: flex;
+    justify-content: center;
+  
+  }
+  
+
+.prev-button:disabled, .next-button:disabled {
+ 
+    cursor: not-allowed;
+}
+
+ 
 .item .content h4:hover {
     color: rgb(207, 1, 1);
 }
 
 .item .item-price {
-    font-size: 12px !important;
+    font-size: 14px !important;
 }
 
-.item .price-icon{
+.item .price-icon {
     display: flex;
     justify-content: space-between;
     font-size: 19px;
-    
+    width: 130px;
 }
-
- 
 
 .item .item-price span {
     color: #966892;
     font-size: 100%;
 }
 
-.star-rating i {
-    font-size: 12px;
-    color: #ffc000;
-}
-
-.item:hover{
-    i{
-        scale: 1.17;
-        color:   darkred !important;
-    }
+.item:hover i {
+    scale: 1.17;
+    color: darkred !important;
 }
 
 @media screen and (min-width: 300px) and (max-width: 800px) {
@@ -112,6 +140,10 @@
         max-height: 23rem;
         max-width: 10rem;
         margin: 8px;
+    }
+    .item .content {
+        height: 30px;
+        margin-top: 30px;
     }
     .item img {
         max-height: 14rem;
@@ -121,8 +153,4 @@
     .item .item-price {
         font-size: 14px;
     }
-     
 }
-
-
-/* end of newbooks */
