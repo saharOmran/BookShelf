@@ -2,10 +2,11 @@
 
 .Newbooks {
     background-color: rgba(142, 144, 144 , 0.1);
+    padding-top: 60px;
 }
 
 .carousel {
-    margin-top: 50px;
+    margin-top: 0px;
     overflow: hidden;
     cursor: grab;
     margin-bottom: 50px;

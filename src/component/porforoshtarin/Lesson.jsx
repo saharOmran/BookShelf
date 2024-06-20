@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from "react";
 import "../header/header.css";
-import { Link } from "react-router-dom";
+import { useNavigate} from "react-router-dom";
 import './porforosh.css';
 import { motion } from "framer-motion";
 
@@ -13,7 +13,7 @@ const Lesson = () => {
     // Function to fetch books data by category
     const fetchBooksByCategory = async (category) => {
       try {
-          const response = await fetch(`http://127.0.0.1:80/book/get_books_by_category/${encodeURIComponent(category)}`);
+          const response = await fetch(`http://127.0.0.1:80/book/get_books_by_category_with_bookid_inresponse/${encodeURIComponent(category)}`);
           if (!response.ok) {
               throw new Error('Not Found');
           }
@@ -43,6 +43,12 @@ const Lesson = () => {
         }
     }, [books]);
 
+    const navigate = useNavigate();
+    const handleBookClick = (book_id) => {
+        console.log("hello"); // Add this line to inspect the clicked book object
+        navigate(`/bookdetails/${book_id}`);
+    };
+
     return (
       <div>
           <section className="Newbooks">
@@ -50,7 +56,7 @@ const Lesson = () => {
                   <div className="row">
                       <div className="col-md-12 mx-auto">
                           <h2>
-                              کتاب های<b> تحصیلی </b>
+                              کتاب های<b> درسی </b>
                           </h2>
                           {error ? (
                               <div className="error-message">{error}</div>
@@ -58,14 +64,13 @@ const Lesson = () => {
                               <motion.div ref={carouselRef} whileTap={{ cursor: "grabbing" }} className="carousel">
                                   <motion.div drag="x" dragConstraints={{ right: 0, left: -width }} className="inner-carousel">
                                       {books.map((book) => (
-                                          <motion.div className="item" key={book.book_number}>
+                                          <motion.div className="item" key={book.book_number} onClick={() => handleBookClick(book.book_id)}>
                                               <div className="imgBox">
                                                   <img src={book.image_url} alt="bookimg" />
                                                   <div className="content">
                                                       <div className="name-price">
-                                                          <Link to={`/bookdetails/${book.book_number}`} style={{ textDecoration: 'none' }}>
-                                                              <h4>{book.name}</h4>
-                                                          </Link>
+                                                               <h4>{book.name}</h4>
+                                                          
                                                           <hr />
                                                           <div className="price-icon">
                                                               <p className="item-price">

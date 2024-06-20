@@ -13,6 +13,11 @@ COPY IAM ./IAM
 # Install IAM-specific requirements
 RUN pip install -r IAM/requirements.txt
 
+# Copy the Core service
+COPY Core ./Core
+# Install Core-specific requirements
+RUN pip install -r Core/requirements.txt
+
 # Copy the MEDIA service
 COPY MEDIA ./MEDIA
 # Install MEDIA-specific requirements
@@ -34,6 +39,7 @@ RUN pip install -r gRPC/requirements.txt
 COPY gateway ./gateway
 
 # Expose the necessary ports
-EXPOSE 8000 8001 50051
+EXPOSE 8000 8002 80001 50051
 
-CMD ["python", "IAM/presentation/main.py"]
+CMD ["python", "IAM/presentation/main.py", , "Core/presentation/main.py", "MEDIA/main.py"]
+

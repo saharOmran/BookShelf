@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams , useNavigate} from 'react-router-dom';
 import axios from 'axios';
 import './bookdetails.css';
 
@@ -28,6 +28,8 @@ const BookDetails = () => {
 
         fetchBookDetails();
     }, [book_id]);
+
+     
 
     const addToCart = async () => {
         const token = localStorage.getItem('token');
@@ -88,6 +90,9 @@ const BookDetails = () => {
         return <div>Error loading book details: {error}</div>;
     }
 
+    
+  
+
     return (
         <div className="container book-details-container">
             <div className="first-row">
@@ -126,7 +131,7 @@ const BookDetails = () => {
                 <h2>کتاب‌های مرتبط</h2>
                 <div className="related-books-list">
                     {relatedBooks.map((relatedBook) => (
-                        <div key={relatedBook.id} className="related-book-item">
+                        <div key={relatedBook.id}    className="related-book-item">
                             <img src={relatedBook.image_url} alt={relatedBook.name} />
                             <h3>{relatedBook.name}</h3>
                         </div>

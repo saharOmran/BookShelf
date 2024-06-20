@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./shoppingcart.css";
+import { useNavigate } from "react-router-dom";
 
 const ShoppingCart = ({ onDecrement }) => {
   const [cartBooks, setCartBooks] = useState([]);
@@ -174,6 +175,12 @@ const ShoppingCart = ({ onDecrement }) => {
     fetchCartItems(); // Fetch cart items for the new user after login
   };
 
+  const navigate = useNavigate();
+    const handleBookClick = (book_id) => {
+        console.log("hello"); // Add this line to inspect the clicked book object
+        navigate(`/bookdetails/${book_id}`);
+    };
+
   return (
     <>
       <div className="container mt-5 p-3 cart">
@@ -196,9 +203,9 @@ const ShoppingCart = ({ onDecrement }) => {
                       </thead>
                       <tbody>
                         {cartBooks.map((book) => (
-                          <tr key={book.book_id}>
+                          <tr key={book.book_id}   >
                             <td className="align-middle d-flex bookImage">
-                              <img className="rounded" src={book.image_url} width={40} alt="" />
+                              <img className="rounded" src={book.image_url} onClick={() => handleBookClick(book.book_id)} width={40} alt="" />
                               <div className="p-2">
                                 <span className="d-block bookname">
                                   {book.name}

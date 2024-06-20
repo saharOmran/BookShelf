@@ -1,9 +1,15 @@
 import React from 'react';
 import './booksview.css';
-import { Link } from 'react-router-dom';
-import images from './../../images';
+ import { useParams, useNavigate } from 'react-router-dom';
 
+ 
 const BooksView = ({ books }) => {
+
+    const navigate = useNavigate();
+    const handleBookClick = (book_id) => {
+        console.log("hello"); // Add this line to inspect the clicked book object
+        navigate(`/bookdetails/${book_id}`);
+    };
   
     return (
         <section className="most-books">
@@ -14,12 +20,12 @@ const BooksView = ({ books }) => {
                     </div>
                     <div className="books">
                         {(books.slice(0,10)).map((books) => (
-                            <div className="book" key={books.id}>
-                                <Link to={`./bookdetails/${books.id}`}><img src={images[(books.id)]} alt='book' loading="lazy" className='img-item'/></Link>
+                            <div className="book" key={books.id} onClick={() => handleBookClick(books.book_id)}>
+                                <img src={books.image_url} alt='book' loading="lazy" className='img-item'/>
                                 <div className="thumb-content">
-                                    <h5>{books.name}</h5>
+                                    <h5>{books.title}</h5>
                                     <p className="item-price">
-                                        <strike>{books.price}</strike> <span>15%</span>
+                                        <span>{books.price}</span> 
                                     </p>
                                 </div>
                             </div>
