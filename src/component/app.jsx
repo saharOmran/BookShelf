@@ -38,7 +38,7 @@ const App = () => {
   //   return () => clearTimeout(timeout)
   // }, []);
 
-
+   
   const onWishlist = (book) => {
     //edit
     book.wishlist = true;
@@ -106,7 +106,7 @@ const App = () => {
         <Routes>
           <Route
             path="/"
-            element={<HomePage onSave={onCart} books={books} />}
+            element={<HomePage onSave={onCart} books={books}   />}
           />
           <Route path="/signin" element={<SignIn setUser={setUser} />} />
           <Route
@@ -127,7 +127,7 @@ const App = () => {
 
           <Route 
             path="/UserProfile" 
-            element={<UserProfile />} />
+            element={<UserProfile setUser={setUser}/>} />
           <Route
             path="/admin/edit"
             element={<Edit books={books} onDelete={handleDelete} />}
@@ -137,10 +137,7 @@ const App = () => {
             element={<AllBooks books={books} />}
           />
           
-           <Route
-            path="/CategoryBooks" books
-            element={<CategoryBooks books={books} />}
-          />
+          <Route path="/CategoryBooks/:name" element={<CategoryBooks />} />
            
           <Route
             path="/admin/addnewitem"
@@ -155,14 +152,16 @@ const App = () => {
             element={<AddNewWriter newwriter={writer} setNewWriter={setNewWriter} />}
           />
           <Route
-            path="/bookdetails/:id"
-            element={<BookDetails books={books} onSave={onCart} onWishlist={onWishlist} />}
+            path="/bookdetails/:book_id"
+            element={<BookDetails onSave={onCart} onWishlist={onWishlist} />}
           />
+           
 
-          <Route
+
+          {/* <Route
             path="allbooks/bookdetails/:id"
-            element={<BookDetails books={books} onSave={onCart} onWishlist={onWishlist} />}
-          />
+            element={<BookDetails books={bookonSave={onCart} onWishlist={onWishlist} />}
+          /> */}
           <Route
             path="wishlist/bookdetails/:id"
             element={<BookDetails books={books} onSave={onCart} onWishlist={onWishlist} />}

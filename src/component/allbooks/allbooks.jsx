@@ -178,56 +178,39 @@
 // export default AllBooks;
 
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import './allbooks.css';
+import CategoryCard from './CategoryCard';
 
 const categories = [
-    { id: 1, name: 'ادبیات داستانی', image: './adabiat-dastani.webp' },
-    { id: 2, name: 'خودپروری', image: './khodparvari.webp' },
-    { id: 3, name: 'روانشناسی', image: './ravanshenasi.jpg' },
-    { id: 4, name: 'فلسفی', image: './falsafi.jpg' },
-    { id: 5, name: 'دینی و مذهبی', image: './dini.jpg' },
-    { id: 6, name: 'آموزشی', image: './amozeshi.jpg' },
-    { id: 7, name: 'تاریخی', image: './tarikhi.jpg' },
-    { id: 8, name: 'سیاسی', image: './siasi.jpg' },
-    { id: 9, name: 'علمی', image: './elmi.jpg' },
-    { id: 10, name: 'زندگی نامه', image: './zendeginame.jpg' },
-    { id: 11, name: 'هنری', image: './honari.jpg' },
-    { id: 12, name: 'کودکانه', image: './kodakaneh.jpg' },
-    { id: 13, name: 'موسیقی', image: './mosiqi.jpg' },
-    { id: 14, name: 'علوم کامپیوتر', image: './computer.jpg' },
-    { id: 15, name: 'اجتماعی', image: './people.jpg' },
-    { id: 16, name: 'سینما و تئاتر', image: './sinama.jpg' },
-    { id: 17, name: 'شعر', image: './sher.jpg' },
-    { id: 18, name: 'حقوقی', image: './hoqoq.png' },
-    { id: 19, name: 'ورزشی', image: './varzeshi.jpg' },
-    { id: 20, name: 'پزشکی', image: './pezeshki.jpg' },
-    { id: 21, name: 'سلامت', image: './salamat.jpg' },
-    { id: 22, name: 'زبان اصلی', image: './english.jpg' },
+    { name: 'ادبیات داستانی', image: './adabiat-dastani.webp' },
+    { name: 'خودپروری', image: './khodparvari.webp' },
+    { name: 'روانشناسی', image: './ravanshenasi.jpg' },
+    { name: 'فلسفی', image: './falsafi.jpg' },
+    { name: 'دینی و مذهبی', image: './dini.jpg' },
+    { name: 'آموزشی', image: './amozeshi.jpg' },
+    { name: 'تاریخی', image: './tarikhi.jpg' },
+    { name: 'سیاسی', image: './siasi.jpg' },
+    { name: 'علمی', image: './elmi.jpg' },
+    { name: 'زندگی نامه', image: './zendeginame.jpg' },
+    { name: 'هنری', image: './honari.jpg' },
+    { name: 'کودکانه', image: './kodakaneh.jpg' },
+    { name: 'موسیقی', image: './mosiqi.jpg' },
+    { name: 'علوم کامپیوتر', image: './computer.jpg' },
+    { name: 'اجتماعی', image: './people.jpg' },
+    { name: 'سینما و تئاتر', image: './sinama.jpg' },
+    { name: 'شعر', image: './sher.jpg' },
+    { name: 'حقوقی', image: './hoqoq.png' },
+    { name: 'ورزشی', image: './varzeshi.jpg' },
+    { name: 'پزشکی', image: './pezeshki.jpg' },
+    { name: 'سلامت', image: './salamat.jpg' },
+    { name: 'زبان اصلی', image: './english.jpg' },
 ];
-
-const CategoryCard = ({ id, name, image }) => {
-    const navigate = useNavigate();
-
-    const handleClick = () => {
-        navigate(`/CategoryBooks/${id}`);
-    };
-
-    return (
-        <div className="category-card" onClick={handleClick}>
-            <img src={image} alt={name} className="category-image" />
-            <div className="category-name">{name}</div>
-        </div>
-    );
-};
 
 const AllBooks = () => {
     const [searchQuery, setSearchQuery] = useState('');
 
     const filteredCategories = categories.filter(category => 
-        category.name.toLowerCase().includes(searchQuery.toLowerCase())||
-        book.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        book.author.toLowerCase().includes(searchQuery.toLowerCase())
+        category.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
     return (
@@ -242,7 +225,7 @@ const AllBooks = () => {
             </div>
             <div className="category-container">
                 {filteredCategories.map(category => (
-                    <CategoryCard key={category.id} id={category.id} name={category.name} image={category.image} />
+                    <CategoryCard key={category.name} name={category.name} image={category.image} />
                 ))}
             </div>
         </>
@@ -250,6 +233,9 @@ const AllBooks = () => {
 };
 
 export default AllBooks;
+
+
+ 
 
 
  

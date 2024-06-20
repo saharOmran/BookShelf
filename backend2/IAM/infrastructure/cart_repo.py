@@ -11,12 +11,12 @@ class CartRepository:
         cart_key = f"cart:{user_id}"
         cart_items = self.get_cart(user_id)
         for item in cart_items:
-            if item['book_id'] == cart_item.book_id:
-                item['quantity'] += cart_item.quantity
+            if item.book_id == cart_item.book_id:
+                item.quantity += cart_item.quantity
                 break
         else:
-            cart_items.append(cart_item.dict())
-        self.redis_client.set(cart_key, json.dumps(cart_items))
+            cart_items.append(cart_item)
+        self.redis_client.set(cart_key, json.dumps([item.dict() for item in cart_items]))
 
     def get_cart(self, user_id: str) -> List[CartItem]:
         cart_key = f"cart:{user_id}"

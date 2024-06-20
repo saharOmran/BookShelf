@@ -55,10 +55,9 @@ class BookDisplay(BaseModel):
     published: int
     description: str
     image_url: str
-
-
-class Config:
-        from_orm = True
+    
+    class Config:
+        orm_mode = True
 
 
 
