@@ -13,7 +13,7 @@ const CategoryBooks = () => {
         const fetchBooks = async () => {
             try {
                 const encodedCategory = encodeURIComponent(name);
-                const response = await fetch(`http://127.0.0.1:80/book/get_books_by_category_with_bookid_inresponse/${encodedCategory}`, {
+                const response = await fetch(`http://127.0.0.1:82/book/get_books_by_category_with_bookid_inresponse/${encodedCategory}`, {
                     method: 'GET',
                     headers: {
                         'Accept': 'application/json'

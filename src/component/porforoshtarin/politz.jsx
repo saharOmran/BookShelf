@@ -9,11 +9,24 @@ const Politz = () => {
     const [width, setWidth] = useState(0);
     const [error, setError] = useState(null);
     const carouselRef = useRef();
+    const [currentSetIndex, setCurrentSetIndex] = useState(0);
+
+    const handleNextClick = () => {
+        if (currentSetIndex < books.length - 9) {
+            setCurrentSetIndex(currentSetIndex + 1);
+        }
+    };
+
+    const handlePrevClick = () => {
+        if (currentSetIndex > 0) {
+            setCurrentSetIndex(currentSetIndex - 1);
+        }
+    };
 
     // Function to fetch books data by category
     const fetchBooksByCategory = async (category) => {
       try {
-          const response = await fetch(`http://127.0.0.1:80/book/get_books_by_category_with_bookid_inresponse/${encodeURIComponent(category)}`);
+          const response = await fetch(`http://127.0.0.1:82/book/get_books_by_category_with_bookid_inresponse/${encodeURIComponent(category)}`);
           if (!response.ok) {
               throw new Error('Not Found');
           }
@@ -63,7 +76,7 @@ const Politz = () => {
                           ) : (
                               <motion.div ref={carouselRef} whileTap={{ cursor: "grabbing" }} className="carousel">
                                   <motion.div drag="x" dragConstraints={{ right: 0, left: -width }} className="inner-carousel">
-                                      {books.map((book) => (
+                                      {books.slice(currentSetIndex, currentSetIndex + 9).map((book , index) => (
                                           <motion.div className="item" key={book.book_number} onClick={() => handleBookClick(book.book_id)}>
                                               <div className="imgBox">
                                                   <img src={book.image_url} alt="bookimg" />
@@ -83,6 +96,10 @@ const Politz = () => {
                                           </motion.div>
                                       ))}
                                   </motion.div>
+                                  <div className="button-container">
+                                    <button className="prev-button" onClick={handlePrevClick}>{"<"}</button>
+                                    <button className="next-button" onClick={handleNextClick}>{">"}</button>
+                                </div>
                               </motion.div>
                           )}
                       </div>

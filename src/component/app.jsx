@@ -13,11 +13,9 @@ import Category from "./db2";
 import Writer from "./db3";
 import AllBooks from "./allbooks/allbooks";
 import Wishlist from "./wishlist/wishilst";
-import AddNewCategory from "./addnewcategory/addnewcategory";
-import AddNewWriter from "./addnewwriter/addnewwriter";
-import Footer from "./footer/footer";
-import PanelMid from "./panelmid/panelmid";
-import './app.css';
+ 
+ import Footer from "./footer/footer";
+ import './app.css';
 import AboutUs from './aboutus/aboutus';
 import UserProfile from './user/UserProfile';
 import Login from './signin/Login';
@@ -27,8 +25,7 @@ import CategoryBooks from "./allbooks/CategoryBooks";
 
   const [books, setBooks] = useState(Books);
   const [user, setUser] = useState("");
-  const [category, setNewCategory ] = useState(Category);
-  const [writer, setNewWriter ] = useState(Writer);
+  
 
 
   // useEffect(() => {
@@ -145,14 +142,8 @@ import CategoryBooks from "./allbooks/CategoryBooks";
             path="/admin/addnewitem"
             element={<AddNewItem books={books} setBooks={setBooks} />}
           />
-          <Route
-            path="/admin/AddNewCategory"
-            element={<AddNewCategory newcategory={category} setNewCategory={setNewCategory} />}
-          />
-           <Route
-            path="/admin/AddNewWriter"
-            element={<AddNewWriter newwriter={writer} setNewWriter={setNewWriter} />}
-          />
+           
+            
           <Route
             path="/bookdetails/:book_id"
             element={<BookDetails onSave={onCart} onWishlist={onWishlist} />}

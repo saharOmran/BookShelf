@@ -24,13 +24,17 @@ const Wishlist = ({ onDelete }) => {
         });
 
         const favorites = response.data.favorites;
-        const bookDetailsPromises = favorites.map(bookId =>
-          axios.get(`http://127.0.0.1:80/book/get_book/${bookId}`, {
-            headers: {
-              Authorization: `Bearer ${token}`
-            }
-          })
-        );
+        const deletedBooks = JSON.parse(localStorage.getItem('deletedBooks')) || [];
+
+        const bookDetailsPromises = favorites
+          .filter(bookId => !deletedBooks.includes(bookId))
+          .map(bookId =>
+            axios.get(`http://127.0.0.1:82/book/get_book/${bookId}`, {
+              headers: {
+                Authorization: `Bearer ${token}`
+              }
+            })
+          );
 
         const booksData = await Promise.all(bookDetailsPromises);
         const books = booksData.map(book => book.data);
@@ -47,23 +51,32 @@ const Wishlist = ({ onDelete }) => {
     fetchWishlist();
   }, []);
 
-  const handleDelete = async (bookId) => {
+  const handleDelete = async (book) => {
     try {
       const token = localStorage.getItem('token');
       if (!token) {
         throw new Error('No token found');
       }
 
-      await axios.delete(`http://127.0.0.1:80/favorites/remove/${bookId}`, {
+      const response = await fetch(`http://127.0.0.1:80/favorites/remove/${book.book_id}`, {
+        method: 'DELETE',
         headers: {
-          Authorization: `Bearer ${token}`
-        }
+          'accept': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
       });
 
-      setWishBooks(prevBooks => prevBooks.filter(book => book._id !== bookId));
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
+      console.log(result.message);
+
+      const updatedCartBooks = wishBooks.filter(item => item.book_id !== book.book_id);
+      setWishBooks(updatedCartBooks);
     } catch (error) {
-      console.error('Error removing book from wishlist:', error);
-      setError('Failed to remove book from wishlist. Please try again.');
+      console.error('Error removing item from cart:', error);
     }
   };
 
@@ -101,7 +114,7 @@ const Wishlist = ({ onDelete }) => {
                     <span className="d-block ml-5">{`${book.price} هزار تومان`}</span>
                     <i
                       className="fas fa-trash mx-4 delete"
-                      onClick={() => handleDelete(book._id)}
+                      onClick={() => handleDelete(book)}
                     ></i>
                   </div>
                 </div>

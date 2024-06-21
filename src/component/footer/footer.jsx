@@ -9,7 +9,7 @@ const Footer = () => {
           <div className="row footer-area">
             <div className="col-lg-4 col-md-6 col-sm-6 mb-5">
               <h6>ارتباط باما</h6>
-              <p>saharomraan@gmail.com  kimiakhani1382@gmail.com</p>
+              <p>saharomraan@gmail.com  nioushamaghsoudnia@gmail.com</p>
             </div>
 
             <div className="col-lg-4 col-md-6 col-sm-6 mb-5">

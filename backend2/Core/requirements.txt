@@ -12,3 +12,5 @@ tenacity
 pybreaker
 requests
 kafka-python
+meilisearch
+confluent-kafka

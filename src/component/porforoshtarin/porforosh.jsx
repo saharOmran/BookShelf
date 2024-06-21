@@ -5,7 +5,19 @@ import './porforosh.css';
 import { motion } from "framer-motion";
 
 const Porforosh = ({ books }) => {
+  const [currentSetIndex, setCurrentSetIndex] = useState(0);
 
+    const handleNextClick = () => {
+        if (currentSetIndex < books.length - 9) {
+            setCurrentSetIndex(currentSetIndex + 1);
+        }
+    };
+
+    const handlePrevClick = () => {
+        if (currentSetIndex > 0) {
+            setCurrentSetIndex(currentSetIndex - 1);
+        }
+    };
  
   
     const [width, setWidth] = useState(0)
@@ -50,7 +62,7 @@ const Porforosh = ({ books }) => {
               </h2>
               <motion.div ref={carouselRef} whileTap={{ cursor: "grabbing" }} className="carousel">
                 <motion.div drag="x" dragConstraints={{ right: 0, left: -width }} className="inner-carousel">
-                  {books.map((book) => (
+                  {books.slice(currentSetIndex, currentSetIndex + 9).map((book , index) =>(
                     <motion.div className="item" key={book.id}  onClick={() => handleBookClick(book.book_id)}>
                       <div className="imgBox" >
                         <img src={book.image_url} alt="bookimg" />
@@ -75,6 +87,10 @@ const Porforosh = ({ books }) => {
                   ))}
   
                 </motion.div>
+                <div className="button-container">
+                <button className="prev-button" onClick={handlePrevClick}>{"<"}</button>
+                <button className="next-button" onClick={handleNextClick}>{">"}</button>
+                </div>
               </motion.div>
   
             </div>

@@ -23,7 +23,7 @@ const HomePage = () => {
     useEffect(() => {
         const fetchBooks = async () => {
             try {
-                const response = await axios.get('http://127.0.0.1:80/books/get_books_with_book_ids');
+                const response = await axios.get('http://127.0.0.1:82/books/get_books_with_book_ids');
                 const allBooks = response.data;
                 const last12Books = allBooks.slice(-12).reverse(); // Get last 12 books
                 const filteredBooks = allBooks.filter(book => book.price >= 200000 && book.price <= 300000).slice(0, 12);

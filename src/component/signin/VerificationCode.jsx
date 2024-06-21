@@ -46,7 +46,7 @@ const VerificationCode = () => {
         const data = await response.json();
         console.log(data);
         successMessage();
-        navigate("/localhost:3000")
+        navigate("/ ")
         // Handle successful login response
       } else {
         const errorData = await response.json();

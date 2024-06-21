@@ -41,7 +41,7 @@ const ShoppingCart = ({ onDecrement }) => {
 
       if (data.cart_items) {
         const bookDetailsPromises = data.cart_items.map(async item => {
-          const bookResponse = await fetch(`http://127.0.0.1:80/book/get_book/${item.book_id}`);
+          const bookResponse = await fetch(`http://127.0.0.1:82/book/get_book/${item.book_id}`);
           if (!bookResponse.ok) {
             throw new Error(`Failed to fetch book details for book_id: ${item.book_id}`);
           }

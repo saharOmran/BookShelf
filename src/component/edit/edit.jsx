@@ -8,7 +8,7 @@ const Edit = () => {
     // Function to fetch books data from the backend API
     const fetchBooks = async () => {
         try {
-            const response = await fetch('http://127.0.0.1:80/books/get_books_with_book_ids');
+            const response = await fetch('http://127.0.0.1:82/books/get_books_with_book_ids');
             const books = await response.json();
             setEditBooks(books);
         } catch (error) {
@@ -19,7 +19,7 @@ const Edit = () => {
     // Function to delete a book by book_id
     const deleteBook = async (book) => {
         try {
-            const response = await fetch(`http://127.0.0.1:80/books/${book.book_id}`, {
+            const response = await fetch(`http://127.0.0.1:82/books/${book.book_id}`, {
                 method: 'DELETE',
             });
             const result = await response.json();

@@ -9,16 +9,29 @@ const BookDetails = () => {
     const [relatedBooks, setRelatedBooks] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [currentSetIndex, setCurrentSetIndex] = useState(0);
+
+    const handleNextClick = () => {
+        if (currentSetIndex < relatedBooks.length - 6) {
+            setCurrentSetIndex(currentSetIndex + 1);
+        }
+    };
+
+    const handlePrevClick = () => {
+        if (currentSetIndex > 0) {
+            setCurrentSetIndex(currentSetIndex - 1);
+        }
+    };
 
     useEffect(() => {
         const fetchBookDetails = async () => {
             try {
-                const response = await axios.get(`http://127.0.0.1:80/book/get_book/${book_id}`);
+                const response = await axios.get(`http://127.0.0.1:82/book/get_book/${book_id}`);
                 setBook(response.data);
                 setLoading(false);
 
                 // Fetch related books by category
-                const categoryResponse = await axios.get(`http://127.0.0.1:80/book/get_books_by_category/${response.data.category}`);
+                const categoryResponse = await axios.get(`http://127.0.0.1:82/book/get_books_by_category/${response.data.category}`);
                 setRelatedBooks(categoryResponse.data);
             } catch (error) {
                 setError(error.message);
@@ -130,12 +143,19 @@ const BookDetails = () => {
             <div className="related-books">
                 <h2>کتاب‌های مرتبط</h2>
                 <div className="related-books-list">
-                    {relatedBooks.map((relatedBook) => (
+                    {relatedBooks.slice(currentSetIndex, currentSetIndex + 6
+
+                    ).map((relatedBook , index)  => (
                         <div key={relatedBook.id}    className="related-book-item">
                             <img src={relatedBook.image_url} alt={relatedBook.name} />
                             <h3>{relatedBook.name}</h3>
                         </div>
                     ))}
+                    
+                </div>
+                <div className="button-container">
+                     <button className="prev-button" onClick={handlePrevClick}>{"<"}</button>
+                     <button className="next-button" onClick={handleNextClick}>{">"}</button>
                 </div>
             </div>
         </div>

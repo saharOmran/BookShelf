@@ -14,7 +14,7 @@ const UserProfile = ({ setUser }) => {
     const handleLogout = () => {
         localStorage.removeItem("user");
         setUser(null);
-        navigate("/signin", { replace: true });
+        navigate("/", { replace: true });
     };
 
     return (

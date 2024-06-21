@@ -47,7 +47,7 @@ const AddNewItem = () => {
         formData.append('book_number', newBook.id);
 
         try {
-            const response = await axios.post("http://127.0.0.1:80/books", formData, {
+            const response = await axios.post("http://127.0.0.1:82/books", formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 }

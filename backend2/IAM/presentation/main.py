@@ -200,3 +200,111 @@ async def read_users_me(token: str = Depends(oauth2_scheme)):
         raise HTTPException(status_code=401, detail="Invalid token")
     return {"username": username}
 
+cart_repository = CartRepository(redis_client)
+cart_service = CartService(cart_repository)
+def verify_token(token: str):
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        user_id: str = payload.get("sub")
+        if user_id is None:
+            raise HTTPException(status_code=401, detail="Invalid authentication credentials")
+        return user_id
+    except jwt.ExpiredSignatureError:
+        raise HTTPException(status_code=401, detail="Token has expired")
+    except jwt.InvalidTokenError:
+        raise HTTPException(status_code=401, detail="Invalid token")
+
+@app.post("/cart/add")
+async def add_to_cart(cart_item: CartItem, token: str = Depends(oauth2_scheme)):
+    user_id = verify_token(token)
+    cart_service.add_to_cart(user_id, cart_item)
+    return {"message": "Item added to cart successfully"}
+
+@app.get("/cart")
+async def get_cart(token: str = Depends(oauth2_scheme)):
+    user_id = verify_token(token)
+    cart_items = cart_service.get_cart(user_id)
+    return {"cart_items": cart_items}
+
+@app.delete("/cart/remove/{book_id}")
+async def remove_from_cart(book_id: str, token: str = Depends(oauth2_scheme)):
+    user_id = verify_token(token)
+    cart_service.remove_from_cart(user_id, book_id)
+    return {"message": "Item removed from cart successfully"}
+
+@app.delete("/cart/clear")
+async def clear_cart(token: str = Depends(oauth2_scheme)):
+    user_id = verify_token(token)
+    cart_service.clear_cart(user_id)
+    return {"message": "Cart cleared successfully"}
+
+@app.put("/cart/increase/{book_id}")
+async def increase_item_quantity(book_id: str, token: str = Depends(oauth2_scheme)):
+    user_id = verify_token(token)
+    cart_service.update_cart_item_quantity(user_id, book_id, 1)
+    return {"message": "Item quantity increased successfully"}
+
+@app.put("/cart/decrease/{book_id}")
+async def decrease_item_quantity(book_id: str, token: str = Depends(oauth2_scheme)):
+    user_id = verify_token(token)
+    cart_service.update_cart_item_quantity(user_id, book_id, -1)
+    return {"message": "Item quantity decreased successfully"}
+
+
+
+@app.post("/favorites/add")
+async def add_to_favorites(book_id: str, token: str = Depends(oauth2_scheme)):
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        user_id: str = payload.get("sub")
+        if user_id is None:
+            raise HTTPException(status_code=401, detail="Invalid authentication credentials")
+    except jwt.PyJWTError:
+        raise HTTPException(status_code=401, detail="Invalid token")
+
+    cart_service.add_to_favorites(user_id, book_id)
+    return {"message": "Book added to favorites successfully"}
+
+@app.get("/favorites")
+async def get_favorites(token: str = Depends(oauth2_scheme)):
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        user_id: str = payload.get("sub")
+        if user_id is None:
+            raise HTTPException(status_code=401, detail="Invalid authentication credentials")
+    except jwt.PyJWTError:
+        raise HTTPException(status_code=401, detail="Invalid token")
+
+    favorites = cart_service.get_favorites(user_id)
+    return {"favorites": favorites}
+
+@app.delete("/favorites/remove/{book_id}")
+async def remove_from_favorites(book_id: str, token: str = Depends(oauth2_scheme)):
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        user_id: str = payload.get("sub")
+        if user_id is None:
+            raise HTTPException(status_code=401, detail="Invalid authentication credentials")
+    except jwt.PyJWTError:
+        raise HTTPException(status_code=401, detail="Invalid token")
+
+    cart_service.remove_from_favorites(user_id, book_id)
+    return {"message": "Book removed from favorites successfully"}
+
+@app.post("/payment")
+async def make_payment(token: str = Depends(oauth2_scheme)):
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        user_id: str = payload.get("sub")
+        if user_id is None:
+            raise HTTPException(status_code=401, detail="Invalid authentication credentials")
+    except jwt.PyJWTError:
+        raise HTTPException(status_code=401, detail="Invalid token")
+
+    cart_items = cart_service.get_cart(user_id)
+    if not cart_items:
+        raise HTTPException(status_code=400, detail="Cart is empty")
+    # Simulate payment processing
+    cart_service.clear_cart(user_id)
+    return {"message": "Payment successful and cart cleared"}
+
