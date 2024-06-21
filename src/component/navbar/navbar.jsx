@@ -12,6 +12,7 @@ const Navbar = ({ user, setUser }) => {
 
   const { sticky, stickyRef } = useSticky();
   const [showMenu, setShowMenu] = useState(false);
+  
 
     const handleLogout = () => {
         localStorage.removeItem("user");
@@ -92,7 +93,7 @@ const Navbar = ({ user, setUser }) => {
                     {user ? (
                   <div className="dropdown">
                     <button onClick={() => setShowMenu(!showMenu)} className="btn btn-primary">
-                      Welcome, {user}!
+                      Welcome, { user }!
                     </button>
                     {showMenu && (
                       <div className="dropdown-menu">
@@ -105,8 +106,12 @@ const Navbar = ({ user, setUser }) => {
                   
                   <NavLink className="nav-icon position-relative text-decoration-none mx-5" to={'./signin'}>
                   <i className="fa fa-fw fa-user text-dark mr-3" />
+
                 </NavLink>
                 )}
+
+              <button className="btn btn-danger" onClick={handleLogout}>Log Out</button>
+
                 
               
             </div>

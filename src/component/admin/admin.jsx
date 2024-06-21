@@ -21,18 +21,8 @@ const Admin = () => {
             تغییر 
           </Link>
         </div>
-        <div className="box">
-        <h4>افزودن کتگوری جدی </h4>
-          <Link className="btn btn-danger rounded-pill mt-5 mr-5" to={"./addnewcategory"}>
-          اضافه   <i className="fas fa-plus"></i> 
-          </Link>
-        </div>
-        <div className="box">
-        <h4>افزودن نویسنده جدید </h4>
-          <Link className="btn btn-danger rounded-pill mt-5 mr-5" to={"./addnewwriter"}>
-          اضافه   <i className="fas fa-plus"></i> 
-          </Link>
-        </div>
+        
+         
       
       </div>
      

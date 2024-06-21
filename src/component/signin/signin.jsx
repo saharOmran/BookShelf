@@ -48,7 +48,7 @@ const SignIn = ({ setUser }) => {
       localStorage.setItem('token', token); // Save token to localStorage
       setUser(data.mobile_number);
       localStorage.setItem("user", data.mobile_number); // Save user to localStorage
-      if (data.mobile_number === '0911117783268' || data.mobile_number === '0911778326688') {
+      if (data.mobile_number === '09114453123') {
         navigate("/admin", { replace: true });
       } else {
         navigate("/", { replace: true });

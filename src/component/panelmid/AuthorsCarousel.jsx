@@ -8,12 +8,12 @@ const authors = [
     { id: 4, name: 'فرهنگ رجایی', image: './rajaei.png' },
     { id: 5, name: 'مارتین راین', image: './martin.png' },
     { id: 6, name: 'فرانسوا ساگان', image: './francoise-sagan.png' },
-    { id: 7, name: 'مث هیگ'  , image: './math.png' },
-    { id: 8, name: 'شکوه قاسم نیا' , image: './shokoh.g' },
-    { id: 9, name: ' زویا پیرزاد ', image: './zoya.png' },
-    { id: 10, name: ' ویلیم مک ریون ', image: './viliam.png' },
-    { id: 11, name: 'کریم زمانی', image: './zamani.png' },
-    { id: 12, name: ' ویلیام شکسپیر', image: './shekspier.png' },
+    // { id: 7, name: 'مث هیگ'  , image: './math.png' },
+    // { id: 8, name: 'شکوه قاسم نیا' , image: './shokoh.g' },
+    // { id: 9, name: ' زویا پیرزاد ', image: './zoya.png' },
+    // { id: 10, name: ' ویلیم مک ریون ', image: './viliam.png' },
+    // { id: 11, name: 'کریم زمانی', image: './zamani.png' },
+    // { id: 12, name: ' ویلیام شکسپیر', image: './shekspier.png' },
     // Add more authors here...
 ];
 
@@ -34,6 +34,7 @@ const AuthorsCarousel = () => {
     };
 
     return (
+        <>
         <div className="all-authors">
             <div className="carousel-container">
                 <div className="carousel-header">
@@ -41,9 +42,7 @@ const AuthorsCarousel = () => {
                     <button className="show-all-btn">مشاهده همه</button>
                 </div>
                 <div className="carousel-content">
-                    <button className="prev-btn" onClick={prev} disabled={currentIndex === 0}>
-                        &lt;
-                    </button>
+                     
                     <div className="carousel-items">
                         {authors.slice(currentIndex, currentIndex + itemsToShow).map(author => (
                             <div key={author.id} className="carousel-itemm">
@@ -52,12 +51,11 @@ const AuthorsCarousel = () => {
                             </div>
                         ))}
                     </div>
-                    <button className="next-btn" onClick={next} disabled={currentIndex >= authors.length - itemsToShow}>
-                        &gt;
-                    </button>
+                     
                 </div>
             </div>
     </div>
+    </>
     );
 };
 
