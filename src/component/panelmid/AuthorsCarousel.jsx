@@ -34,7 +34,7 @@ const AuthorsCarousel = () => {
     };
 
     return (
-        <>
+        < div className='kol'>
         <div className="all-authors">
             <div className="carousel-container">
                 <div className="carousel-header">
